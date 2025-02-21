@@ -1,0 +1,50 @@
+/* Hide the default show password icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"]::-webkit-input-placeholder {
+    /* Safari */
+    display: none;
+}
+
+
+
+.auth-container {
+    background-image: url('../src/assets/imgs/auth-bg.png') ;
+    background-size: cover ;
+    background-position: center;
+}
+
+.bg-overlay {
+    background: linear-gradient(45deg,rgba(55, 140, 47, 0.4),rgba(0, 0, 0, 0.75));
+}
+
+
+
+.custom-button {
+    background-color: #4AA35A !important;
+}
+
+.form-control {
+    background-color: #F7F7F7 !important;
+    border:none !important;
+    padding: 10px !important;
+}
+
+.input-group-text {
+    border: none !important;
+    cursor: pointer;
+}
+
+.devider {
+    width: 1px !important;
+    height: 95% !important;
+    margin: 0 10px !important;
+    background-color: #8391A1 !important; /* Use background-color instead of color */
+}
+
+i,input[placeholder] {
+    color: #8391A1 !important;
+}
