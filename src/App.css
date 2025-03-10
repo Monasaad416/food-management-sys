@@ -48,3 +48,117 @@ input[type="password"]::-webkit-input-placeholder {
 i,input[placeholder] {
     color: #8391A1 !important;
 }
+
+.sidebar-container .ps-sidebar-container {
+    background-color: #1F263E!important;
+    height: 100vh !important;
+    border-top-right-radius: 58px !important;
+}
+
+.sidebar-container .logo-link {
+    padding: 20px 20px 20px 10px !important;
+    
+}
+
+.sidebar-container .sidebar-logo {
+    width: 90px !important;
+    height: 90px !important;
+
+}
+
+.sidebar-container .ps-menuitem-root {
+    color: #fff !important;
+}
+.sidebar-container .ps-menu-button:hover {
+    background-color:rgba(0, 146, 71, 0.3) !important;
+    border-left: 2px solid #009247!important;
+}
+
+.sidebar-container .logo-link a:hover {
+    background-color:transparent !important;
+    border: none !important;
+    
+}
+.sidebar-container i {
+    color:#fff!important;
+}
+
+.header {
+    background-color:rgba(0, 146, 71, 1);
+}
+
+table thead {
+    background-color: red !important;
+}
+
+/* categories styling start*/
+.btn-custom {
+    background-color:rgba(0, 146, 71, 1)!important;
+    color: #fff !important;
+    padding: 10px 50px !important;
+}
+/* categories styling end*/
+
+
+.custom-btn-close {
+    position: relative; 
+    color: rgba(204, 0, 0, 1) !important;
+    border: 2px solid rgba(204, 0, 0, 1) !important;
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    cursor: pointer;
+    opacity: 1 !important;
+    overflow: hidden; 
+    text-align:right !important;
+    margin-right: 20px;
+}
+.custom-close-modal-btn{
+    padding: 10px!important;
+    color:rgba(204, 0, 0, 1) !important;
+    border:2px solid rgba(204, 0, 0, 1) !important;
+}
+
+.custom-add-modal-btn{
+    padding: 10px 20px!important;
+    background-color:rgba(0, 146, 71, 1) !important;
+    color: #fff !important;
+    font-weight: 300 !important;
+
+}
+.fa-xmark {
+    color:rgba(204, 0, 0, 1) !important;
+} 
+
+.add-title {
+    color: rgba(73, 73, 73, 1);
+}
+.delete-title {
+    color: rgba(73, 73, 73, 1);
+}
+.delete-text {
+    color: rgba(73, 73, 73, 0.6);
+}
+.modal-footer {
+    border-top: 2px solid rgba(247, 247, 247, 1) !important;
+    width: 90% !important;
+    margin: auto !important;
+}
+
+.modal-header{
+    border-bottom: none !important;
+}
+
+.action-icon {
+    color:rgba(0, 146, 71, 1)!important;
+}
+
+.action-anchor {
+    color: black !important;
+}
+
+
+

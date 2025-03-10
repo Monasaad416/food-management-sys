@@ -1,7 +1,7 @@
-import React from 'react'
+import noData from '../../../assets/imgs//no-data.png'
 
 export default function NoData() {
   return (
-    <div>NoData</div>
+    <><img src={noData} alt="no-data"/></>
   )
 }

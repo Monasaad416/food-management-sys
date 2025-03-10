@@ -1,19 +1,24 @@
-import Header from '../Header/Header'
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import SideBar from '../Sidebar/Sidebar'
+import PropTypes from 'prop-types'
 
-export default function MasterLayout() {
+ function MasterLayout({loginData}) {
   return (
-    <div className='container-fluid'>
-    <div className="row w-100">
-        <div className="col-3 bg-info"><SideBar/></div>
-        <div className="col-9 bg-danger">
-            <Navbar/>
-            <Header/>
+    <div className='d-flex'>
+
+        <div className=""><SideBar/></div>
+        <div className="w-100">
+            <Navbar loginData={loginData}/>
             <Outlet/>
         </div>
     </div>
-    </div>
   )
 }
+ // Add prop types validation
+MasterLayout.propTypes = {
+  loginData: PropTypes.func.isRequired
+}
+
+
+export default MasterLayout;

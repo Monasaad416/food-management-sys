@@ -2,7 +2,7 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AuthLayout from './Modules/Shared/AuthLayout/AuthLayout';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import NotFound from './Modules/Shared/NotFound/NotFound';
 import Login from './Modules/Auth/Login/Login';
 import Register from './Modules/Auth/Register/Register';
@@ -19,8 +19,22 @@ import CategoryData from './Modules/Categories/CategoryData/CategoryData';
 import UsersList from './Modules/Users/UsersList/UsersList';
 import FavouritsList from './Modules/FavouritsList/FavouritsList';
 import { ToastContainer } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
+import ProtectedRoute from './Modules/Shared/ProtectedRoute/ProtectedRoute';
 
 function App() {
+      let [loginData, setLoginData] = useState(null);
+      
+      let savedLoginData = () => {
+        let encodedToken = localStorage.getItem("token");
+        let decodedToken = jwtDecode(encodedToken);
+        setLoginData(decodedToken);
+      };
+
+      useEffect(()=> {
+        if (localStorage.getItem("token")) savedLoginData();
+      },[])
+      
      const router = createBrowserRouter([
        {
          path: "/",
@@ -35,7 +49,7 @@ function App() {
              index: true,
              element: (
                <Suspense fallback="Loading Please Wait ...">
-                 <Login />
+                 <Login loginData={loginData} />
                </Suspense>
              ),
            },
@@ -43,7 +57,7 @@ function App() {
              path: "login",
              element: (
                <Suspense fallback="Loading Please Wait ...">
-                 <Login />
+                 <Login loginData={loginData} />
                </Suspense>
              ),
            },
@@ -91,7 +105,11 @@ function App() {
        },
        {
          path: "/dashboard",
-         element: <MasterLayout />,
+         element: (
+           <ProtectedRoute>
+             <MasterLayout loginData={loginData} />
+           </ProtectedRoute>
+         ),
          errorElement: (
            <Suspense fallback="Loading Please Wait ...">
              <NotFound />
@@ -157,6 +175,8 @@ function App() {
          ],
        },
      ]);
+
+
   return (
     <>
       <ToastContainer />
