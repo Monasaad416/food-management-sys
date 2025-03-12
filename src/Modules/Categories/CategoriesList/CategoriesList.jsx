@@ -1,43 +1,22 @@
 import Header from "../../Shared/Header/Header";
 import recipiesHeader from "../../../assets/imgs/recipies-header.png";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NoData from "../../Shared/NoData/NoData";
 import { toast } from "react-toastify";
 import { privateAxiosInstance } from "../../../services/api/apiInstance";
 import { CATEGORIES_URLS } from "../../../services/api/apiConfig";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
+import CategoryData from "../CategoryData/CategoryData";
 import { useForm } from "react-hook-form";
+import { BeatLoader } from "react-spinners";
 
 export default function CategoriesList() {
-  //add category start
-    const {
-      register,
-      formState: { errors, isSubmitting },
-      handleSubmit,
-    } = useForm();
-
-    const addCategory = async (data) => {
-      try {
-        await privateAxiosInstance.post(CATEGORIES_URLS.CREATE_CATEGORY, data);
-
-        toast.success("New category created successfully", {
-          theme: "colored",
-        });
-
-        getAllCategories();
-        handleCloseAdd();
-      } catch (error) {
-        toast.error(error.message, {
-          theme: "colored",
-        });
-      }
-    };
-  //add category end
   const [categories, setCategories] = useState([]);
-
   const [showDelete, setShowDelete] = useState(false); //delete modal
-  const [showAdd, setShowAdd] = useState(false); //add modal
+  const [showCatForm, setShowCatForm] = useState(false); //add edit modal
   const [categoryId, setCategoryId] = useState(0);
+  const [editedCategory, setEditedCategory] = useState(null);
+  const [loading,setLoading] = useState(false);
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open delete modal
@@ -52,16 +31,19 @@ export default function CategoriesList() {
     });
   };
 
-  const handleShowAdd = () => {
-    setShowAdd(true); // Open add modal
+  const handleShowCatForm = (id = null) => {
+    setShowCatForm(true); // Open add modal
+    if (id) setCategoryId(id);
   };
 
-  const handleCloseAdd = () => {
-    setShowAdd(false); // Close add modal
+  const handleCloseCatForm = () => {
+    setShowCatForm(false); // Close add edit modal
     document.body.classList.remove("modal-open");
     document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
       backdrop.remove();
     });
+
+    // setEditedCategory(null);
   };
   const deleteCategory = async () => {
     try {
@@ -88,6 +70,7 @@ export default function CategoriesList() {
   };
   const getAllCategories = async () => {
     try {
+      setLoading(true);
       const response = await privateAxiosInstance.get(
         CATEGORIES_URLS.CATEGORIES
       );
@@ -95,6 +78,8 @@ export default function CategoriesList() {
       setCategories(response?.data?.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,9 +87,33 @@ export default function CategoriesList() {
     getAllCategories();
   }, []);
 
+  //fetch cat info if edit flag (categoryId !=null)
+  const { setValue } = useForm();
+  const fetchCategory = useCallback(async () => {
+    if (categoryId) {
+      try {
+
+        const response = await privateAxiosInstance.get(
+          CATEGORIES_URLS.GET_CATEGORY(categoryId)
+        );
+        console.log(response?.data);
+        setEditedCategory(response?.data);
+        setValue("name", response?.data?.name);// didnot work
 
 
-  
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+        toast.error("Failed to fetch category data.", {
+          theme: "colored",
+        });
+      }
+    }
+  }, [categoryId, setEditedCategory]); // Only changes when categoryId or setEditedCategory changes
+
+  useEffect(() => {
+    fetchCategory();
+  }, [categoryId, setEditedCategory,fetchCategory]);
+
 
   return (
     <>
@@ -124,79 +133,89 @@ export default function CategoriesList() {
           <button
             className="btn btn-custom fw-bold"
             data-bs-toggle="modal"
-            data-bs-target="#addModal"
-            onClick={() => handleShowAdd()}
+            data-bs-target="#catFormModal"
+            onClick={() => handleShowCatForm()}
           >
             Add New Category
           </button>
         </div>
       </div>
       <div className="mx-4">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Created At</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(categories) ? (
-              categories.map((category) => (
-                <tr key={category.id}>
-                  <th scope="row">{category.id}</th>
-                  <td>{category.name}</td>
-                  <td>{category.creationDate}</td>
-                  <td>
-                    <div className="dropdown">
-                      <i
-                        className="fa-solid fa-ellipsis"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      ></i>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton1"
-                      >
-                        <li className="dropdown-item">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal"
-                            onClick={() => handleShowDelete(category.id)}
-                            className="d-flex align-items-center text-decoration-none action-anchor"
-                          >
-                            <i className="fa fa-edit d-inline action-icon me-1"></i>
-                            <span> Edit</span>
-                          </a>
-                        </li>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "50vh" }}
+              >
+                {/* Example loader */}
+                <BeatLoader color={"#009247"} loading={loading} size={15} />
+              </div>
+            ) : Array.isArray(categories) && categories.length > 0 ? (
+                <table className="table table-striped">
+                  <thead className="bg-secondary">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {categories.map((category) => (
 
-                        <li className="dropdown-item">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal"
-                            onClick={() => handleShowDelete(category.id)}
-                            className="d-flex align-items-center text-decoration-none action-anchor"
-                          >
-                            <i className="fa fa-trash d-inline action-icon me-1"></i>
-                            <span> Delete</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                          <tr key={category.id}>
+                            <td scope="row">{category.id}</td>
+                            <td>{category.name}</td>
+                            <td>{category.creationDate}</td>
+                            <td>
+                              <div className="dropdown">
+                                <i
+                                  className="fa-solid fa-ellipsis"
+                                  id="dropdownMenuButton1"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false"
+                                ></i>
+                                <ul
+                                  className="dropdown-menu"
+                                  aria-labelledby="dropdownMenuButton1"
+                                >
+                                  <li className="dropdown-item">
+                                    <a
+                                      href="#"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#catFormModal"
+                                      onClick={() => handleShowCatForm(category.id)}
+                                      className="d-flex align-items-center text-decoration-none action-anchor"
+                                    >
+                                      <i className="fa fa-edit d-inline action-icon me-1"></i>
+                                      <span> Edit</span>
+                                    </a>
+                                  </li>
+
+                                  <li className="dropdown-item">
+                                    <a
+                                      href="#"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#deleteModal"
+                                      onClick={() => handleShowDelete(category.id)}
+                                      className="d-flex align-items-center text-decoration-none action-anchor"
+                                    >
+                                      <i className="fa fa-trash d-inline action-icon me-1"></i>
+                                      <span> Delete</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                              ))}
+                  </tbody>
+                </table>
             ) : (
               <div className="d-flex justify-content-center align-items-center">
                 <NoData />
               </div>
             )}
-          </tbody>
-        </table>
+
       </div>
       {/* start delete modal */}
       <DeleteConfirmation
@@ -208,62 +227,13 @@ export default function CategoriesList() {
       {/* End delete modal */}
 
       {/* start add modal */}
-      <form onSubmit={handleSubmit(addCategory)} className="px-5">
-        <div
-          className={`modal ${showAdd == true ? "show fade" : ""}`}
-          id="addModal"
-          tabIndex={-1}
-          style={{ display: showAdd == true ? "block" : "none" }}
-          aria-hidden={!showAdd}
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header d-flex justify-content-between">
-                <h5 className="add-title fw-bold start">Add Category</h5>
-                <button
-                  type="button"
-                  className="custom-btn-close ms-4"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={handleCloseAdd}
-                >
-                  <i className="fa-solid fa-xmark"></i>
-                </button>
-              </div>
-              <div className="modal-body">
-                <span className="add-text">
-                  {/* category */}
-                  <div className="input-group my-3">
-                    <input
-                      {...register("name", {
-                        required: "category name is required",
-                      })}
-                      type="text"
-                      className="form-control"
-                      placeholder="category name"
-                      aria-label="category name"
-                      aria-describedby="basic-addon1"
-                    />
-                  </div>
-
-                  {errors.name && (
-                    <p className="text-danger pb-2">{errors.name.message}</p>
-                  )}
-                </span>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn custom-add-modal-btn fw-bold my-3"
-                  disabled={isSubmitting}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+      <CategoryData
+        categoryId={categoryId}
+        showCatForm={showCatForm}
+        getAllCategories={getAllCategories}
+        handleCloseCatForm={handleCloseCatForm}
+        editedCategory={editedCategory}
+      />
       {/* End add modal */}
     </>
   );

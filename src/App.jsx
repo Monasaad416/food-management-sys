@@ -25,16 +25,31 @@ import ProtectedRoute from './Modules/Shared/ProtectedRoute/ProtectedRoute';
 function App() {
       let [loginData, setLoginData] = useState(null);
       
-      let savedLoginData = () => {
-        let encodedToken = localStorage.getItem("token");
-        let decodedToken = jwtDecode(encodedToken);
-        setLoginData(decodedToken);
-      };
+ let savedLoginData = () => {
+   let encodedToken = localStorage.getItem("token");
+  //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
+   if (encodedToken) {
+     let decodedToken = jwtDecode(encodedToken);
+    //  console.log("Decoded Token:", decodedToken); // Verify decoded token
+     setLoginData(decodedToken);
+   } else {
+     console.error("No token found in localStorage.");
+   }
+ };
 
-      useEffect(()=> {
-        if (localStorage.getItem("token")) savedLoginData();
-      },[])
-      
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      savedLoginData();
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      localStorage.removeItem("token"); // Remove invalid token
+      setLoginData(null); // Clear state
+    }
+  }
+}, []);
+
      const router = createBrowserRouter([
        {
          path: "/",

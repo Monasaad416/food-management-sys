@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisibility";
@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { privateAxiosInstance } from "../../../services/api/apiInstance";
 import { USER_URLS } from "../../../services/api/apiConfig";
+import { BeatLoader } from "react-spinners";
 
 export default function ChangePassword() {
   const {
@@ -159,7 +160,17 @@ export default function ChangePassword() {
           disabled={isSubmitting}
           className="btn w-100 text-white custom-button my-5 fw-bold"
         >
-          Change Password
+          {isSubmitting ? (
+            <BeatLoader
+              color={"white"}
+              loading={true}
+              size={10}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Change Password"
+          )}
         </button>
       </form>
     </>

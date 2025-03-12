@@ -5,24 +5,41 @@ import { useState } from 'react';
 
 export default function SideBar() {
   let navigate = useNavigate();
-  let logout= () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  } 
+  let logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
-  let changePassword = () =>{
-    navigate('/change-password');
-  }
+  let changePassword = () => {
+    navigate("/change-password");
+  };
+  // collapse sidebar start
   let [isCollapsed, setItCollapsed] = useState(false);
 
   let toggleCollapse = () => {
     setItCollapsed(!isCollapsed);
   };
+  // collapse sidebar end
 
-  
+  //toggle mobile menu start
+  let [isToggled, setIsToggled] = useState(false);
+  //toggle mobile menu end
   return (
     <div className="sidebar-container vh-100">
-      <Sidebar className="" collapsed={isCollapsed}>
+      <button className="btn d-md-none">
+        <i
+          className="fa-solid fa-bars"
+          onClick={() => setIsToggled(!isToggled)}
+        ></i>
+      </button>
+      <Sidebar
+        breakPoint="sm"
+        transitionDuration={800}
+        toggled={isToggled}
+        onToggle={(value) => setIsToggled(value)}
+        collapsed={isCollapsed}
+        className={`${isToggled} == true ? 'd-none' :'d-block'`}
+      >
         <Menu>
           <div className="d-flex flex-column justify-content-around align-items-around">
             <div>
@@ -50,11 +67,11 @@ export default function SideBar() {
               </MenuItem>
             </div>
             <div>
-              <MenuItem onClick={changePassword} className='mt-5'>
+              <MenuItem onClick={changePassword} className="mt-5">
                 {" "}
                 <i className="fa-solid fa-lock mx-2"></i> Change Password
               </MenuItem>
-    
+
               <MenuItem onClick={logout}>
                 {" "}
                 <i className="fa-solid fa-right-from-bracket mx-2"></i> Logout

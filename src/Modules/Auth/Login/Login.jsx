@@ -7,6 +7,7 @@ import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisib
 import PropTypes from "prop-types";
 import { publicAxiosInstance } from "../../../services/api/apiInstance.js";
 import { USER_URLS } from "../../../services/api/apiConfig.js";
+import { BeatLoader } from "react-spinners";
 
 
 function Login({ loginData }) {
@@ -35,6 +36,15 @@ function Login({ loginData }) {
         });
     }
   };
+
+  //spinner start
+  // const override = {
+  //   display: "block",
+  //   margin: "0 auto",
+  //   borderColor: "green",
+  // };
+
+  //spinner end
   return (
     <>
       <div className="px-5 py-3">
@@ -117,7 +127,17 @@ function Login({ loginData }) {
           disabled={isSubmitting}
           className="btn w-100 text-white custom-button my-5 fw-bold"
         >
-          Login
+          {isSubmitting ? (
+            <BeatLoader
+              color={"white"}
+              loading={true}
+              size={10}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
     </>

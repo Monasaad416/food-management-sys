@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,6 +6,7 @@ import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisib
 import { useEffect } from "react";
 import { publicAxiosInstance } from "../../../services/api/apiInstance";
 import { USER_URLS } from "../../../services/api/apiConfig";
+import { BeatLoader } from "react-spinners";
 
 export default function ResetPassword() {
   const state = useLocation();
@@ -174,7 +175,17 @@ export default function ResetPassword() {
           disabled={isSubmitting}
           className="btn w-100 text-white custom-button my-5 fw-bold"
         >
-          Reset Password
+          {isSubmitting ? (
+            <BeatLoader
+              color={"white"}
+              loading={true}
+              size={10}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Reset Password"
+          )}
         </button>
       </form>
     </>
