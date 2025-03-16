@@ -1,3 +1,11 @@
+
+:root {
+  --mainGreen: rgba(0, 146, 71, 1);
+  --mainRed:rgba(204, 0, 0, 1)
+
+}
+
+
 /* Hide the default show password icon */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
@@ -24,7 +32,7 @@ input[type="password"]::-webkit-input-placeholder {
 
 
 .custom-button {
-    background-color: #4AA35A !important;
+    background-color: var(--mainGreen) !important;
 }
 
 .form-control {
@@ -42,7 +50,7 @@ input[type="password"]::-webkit-input-placeholder {
     width: 1px !important;
     height: 95% !important;
     margin: 0 10px !important;
-    background-color: #8391A1 !important; /* Use background-color instead of color */
+    background-color: #8391A1 !important;
 }
 
 i,input[placeholder] {
@@ -96,18 +104,12 @@ i,input[placeholder] {
 }
 
 .header {
-    background-color:rgba(0, 146, 71, 1);
-}
-
-
-
-table thead {
-    background-color: red !important;
+    background-color: var(--mainGreen) !important;
 }
 
 /* categories styling start*/
 .btn-custom {
-    background-color:rgba(0, 146, 71, 1)!important;
+    background-color:var(--mainGreen)!important;
     color: #fff !important;
     padding: 10px 50px !important;
 }
@@ -116,8 +118,8 @@ table thead {
 
 .custom-btn-close {
     position: relative; 
-    color: rgba(204, 0, 0, 1) !important;
-    border: 2px solid rgba(204, 0, 0, 1) !important;
+    color: var(--mainRed) !important;
+    border: var(--mainRed) 2px solid  !important;
     border-radius: 50% !important;
     width: 40px;
     height: 40px;
@@ -132,19 +134,19 @@ table thead {
 }
 .custom-close-modal-btn{
     padding: 10px!important;
-    color:rgba(204, 0, 0, 1) !important;
-    border:2px solid rgba(204, 0, 0, 1) !important;
+    color: var(--mainRed) !important;
+    border:2px solid var(--mainRed) !important;
 }
 
 .custom-add-modal-btn{
     padding: 10px 20px!important;
-    background-color:rgba(0, 146, 71, 1) !important;
+    background-color:var(--mainGreen) !important;
     color: #fff !important;
     font-weight: 300 !important;
 
 }
 .fa-xmark {
-    color:rgba(204, 0, 0, 1) !important;
+    color:var(--mainRed) !important;
 } 
 
 .add-title {
@@ -167,7 +169,7 @@ table thead {
 }
 
 .action-icon,.sidebar-container .fa-bars {
-    color:rgba(0, 146, 71, 1)!important;
+    color:var(--mainGreen)!important;
 }
 
 
@@ -208,8 +210,91 @@ td {
  }
 
 
+/* notfound page start */
+ .notfound-page {
+    background-image:url('../src/assets/imgs/Vector.png');
+    background-repeat: no-repeat;
+    background-size:900px;
+    background-position: right bottom;
+    height: 100vh;
+ }
+ .overlay {
+    position: absolute;
+    bottom:0;
+    right: 0 !important;
+ }
+ .notfound-page .title {
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 100%;
+    letter-spacing: 0%;
+ }
+  .notfound-page .sub-title {
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: var(--mainGreen);
+ }
+
+ .notfound-page span{
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 4%;
+ }
+
+ /* notgound page end */
 
 
+ /* pagination start */
+
+ .page-link {
+    color:var(--mainGreen) !important
+ }
+  .active>.page-link{
+    background-color: var(--mainGreen) !important;
+    border-color: var(--mainGreen) !important;
+    color: white !important;
+ }
+ /* pagination end */
+
+/* add recipe start */
+ .fill-recipe{
+    background-color:rgba(240, 255, 239, 1);
+
+
+ }
+ .fill-tilte{
+    color:var(--mainGreen);
+ }
+
+ .fill-text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 4%;
+ }
+ .all-recipes {
+    background-color:var(--mainGreen)!important;
+    color: #fff !important;
+    padding: 5px 10px !important;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+
+}
+
+.add-item{
+    font-family: 16px;
+    color:rgb(159, 156, 156)
+}
+/* add recipe end */
 
 
 

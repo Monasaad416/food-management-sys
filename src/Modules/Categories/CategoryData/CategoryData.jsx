@@ -4,21 +4,21 @@ import { CATEGORIES_URLS } from "../../../services/api/apiConfig";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import { BeatLoader } from "react-spinners";
+import { useCallback, useEffect, useState } from "react";
+
+function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryId}) {
+  
+  const [editedCategory, setEditedCategory] = useState(null);
 
 
-function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryId,editedCategory}) {
   //add category start
-  console.log(editedCategory);
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
+    setValue
 
-  } = useForm({
-    defaultValues: {
-      name: editedCategory?.name || "",
-    },
-  });
+  } = useForm();
 
   const addCategory = async (data) => {
     try {
@@ -28,7 +28,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
         theme: "colored",
       });
 
-      getAllCategories();
+      getAllCategories;
       handleCloseCatForm();
     } catch (error) {
       toast.error(error.message, {
@@ -40,6 +40,33 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
 
   //edit category start
 
+    //fetch cat info if edit flag (categoryId !=null)
+
+    const fetchCategory = useCallback(async () => {
+      if (categoryId) {
+        try {
+  
+          const response = await privateAxiosInstance.get(
+            CATEGORIES_URLS.GET_CATEGORY(categoryId)
+          );
+          console.log(response?.data);
+          setEditedCategory(response?.data);
+          setValue("name", response?.data?.name);// didnot work
+  
+  
+        } catch (error) {
+          console.error("Error fetching category data:", error);
+          toast.error("Failed to fetch category data.", {
+            theme: "colored",
+          });
+        }
+      }
+    }, [categoryId, setEditedCategory,setValue]); // Only changes when categoryId or setEditedCategory changes
+  
+    useEffect(() => {
+      fetchCategory();
+    }, [editedCategory,categoryId, setEditedCategory,fetchCategory]);
+
   const updateCategory = async (data) => {
     try {
       await privateAxiosInstance.put(CATEGORIES_URLS.UPDATE_CATEGORY(categoryId), data);
@@ -48,7 +75,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
         theme: "colored",
       });
 
-      getAllCategories();
+      getAllCategories;
       handleCloseCatForm();
     } catch (error) {
       toast.error(error.message, {

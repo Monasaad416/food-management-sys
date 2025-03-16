@@ -148,7 +148,15 @@ useEffect(() => {
              ),
            },
            {
-             path: "recipe-data",
+             path: "recipes/create-recipe",
+             element: (
+               <Suspense fallback="Loading Please Wait ...">
+                 <RecipeData />
+               </Suspense>
+             ),
+           },
+           {
+             path: "recipes/:recipeId",
              element: (
                <Suspense fallback="Loading Please Wait ...">
                  <RecipeData />

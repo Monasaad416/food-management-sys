@@ -12,13 +12,18 @@ export const USER_URLS = {
 
 
 export const CATEGORIES_URLS = {
-  CATEGORIES: `Category/?pageSize=10&pageNumber=1`,
+  CATEGORIES: `Category`,
   CREATE_CATEGORY: `Category`,
   DELETE_CATEGORY: (id) => `Category/${id}`,
   GET_CATEGORY: (id) => `Category/${id}`,
   UPDATE_CATEGORY: (id) => `Category/${id}`,
 };
 export const RECIPES_URLS = {
-    RECIPES: `Recipe/?pageSize=10&pageNumber=1`,
+    RECIPES: `Recipe`,
     DELETE_RECIPE: (id) => `/Recipe/${id}`,
 }
+
+export const TAGS_URLS = {
+  TAGS: `tag`
+};
+
