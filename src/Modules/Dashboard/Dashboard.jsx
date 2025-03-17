@@ -1,5 +1,6 @@
 import Header from "../Shared/Header/Header";
 import dashboardHeader from "../../assets/imgs/dashboard-header.png"
+import FillRecipe from "../Shared/FillRecipe/FillRecipe";
 
 export default function Dashboard() {
   return (
@@ -12,7 +13,7 @@ export default function Dashboard() {
         width='300'
       />
 
-      Dashboard
+      <FillRecipe/>
     </div>
   );
 }

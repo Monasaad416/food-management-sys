@@ -11,12 +11,11 @@ export default async function getCategories({
   fetchAll = false,
 }) {
   try {
-    setLoading(true);
+    if (setLoading) setLoading(true);
 
-    // Dynamically decide whether to include pagination
     const params = fetchAll
-      ? { pageSize: 10000 ,pageNumber:1,name} // No pagination parameters if fetching all categories ,10000 any hight number to ensure get all cats
-      : { pageSize, pageNumber ,name};
+      ? { pageSize: 10000, pageNumber: 1, name } // No pagination parameters if fetching all categories
+      : { pageSize, pageNumber, name };
 
     const response = await privateAxiosInstance.get(
       CATEGORIES_URLS.CATEGORIES,
@@ -24,6 +23,7 @@ export default async function getCategories({
     );
 
     setCategories(response?.data?.data);
+
     if (!fetchAll) {
       setNumOfPagesArray(
         Array(response?.data?.totalNumberOfPages)
@@ -34,6 +34,6 @@ export default async function getCategories({
   } catch (err) {
     console.error(err);
   } finally {
-    setLoading(false);
+    if (setLoading) setLoading(false); // Ensure `setLoading` is checked before calling
   }
 }

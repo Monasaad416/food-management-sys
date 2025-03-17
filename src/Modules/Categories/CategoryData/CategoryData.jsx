@@ -4,13 +4,9 @@ import { CATEGORIES_URLS } from "../../../services/api/apiConfig";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import { BeatLoader } from "react-spinners";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
-function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryId}) {
-  
-  const [editedCategory, setEditedCategory] = useState(null);
-
-
+function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryId,setEditedCategory}) {
   //add category start
   const {
     register,
@@ -28,7 +24,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
         theme: "colored",
       });
 
-      getAllCategories;
+      getAllCategories();
       handleCloseCatForm();
     } catch (error) {
       toast.error(error.message, {
@@ -49,9 +45,9 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
           const response = await privateAxiosInstance.get(
             CATEGORIES_URLS.GET_CATEGORY(categoryId)
           );
-          console.log(response?.data);
+          // console.log(response?.data);
           setEditedCategory(response?.data);
-          setValue("name", response?.data?.name);// didnot work
+          setValue("name", response?.data?.name);
   
   
         } catch (error) {
@@ -65,7 +61,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
   
     useEffect(() => {
       fetchCategory();
-    }, [editedCategory,categoryId, setEditedCategory,fetchCategory]);
+    }, [fetchCategory]);
 
   const updateCategory = async (data) => {
     try {
@@ -75,7 +71,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
         theme: "colored",
       });
 
-      getAllCategories;
+      getAllCategories();
       handleCloseCatForm();
     } catch (error) {
       toast.error(error.message, {
@@ -167,5 +163,6 @@ CategoryData.propTypes = {
   showCatForm: PropTypes.func.isRequired,
   categoryId: PropTypes.func.isRequired,
   editedCategory: PropTypes.func.isRequired,
+  setEditedCategory: PropTypes.func.isRequired,
 };
 export default CategoryData;

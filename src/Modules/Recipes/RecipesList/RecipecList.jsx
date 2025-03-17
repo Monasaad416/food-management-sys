@@ -3,13 +3,14 @@ import recipiesHeader from "../../../assets/imgs/recipies-header.png";
 import { useEffect, useState } from "react";
 import NoData from "../../Shared/NoData/NoData";
 import { toast } from "react-toastify";
-import noImage from "../../../assets/imgs/no-img.png";
+import noImage from "../../../assets/imgs/no-data.png";
 import { IMAGE_URL, privateAxiosInstance } from "../../../services/api/apiInstance";
-import { RECIPES_URLS, TAGS_URLS } from "../../../services/api/apiConfig";
+import { RECIPES_URLS } from "../../../services/api/apiConfig";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { BeatLoader } from "react-spinners";
 import Pagination from "../../Shared/Pagination/Pagination";
 import getCategories from "../../../Utilities/GetCategories.js";
+import getAllTags from "../../../Utilities/GetTags.js";
 import { Link } from "react-router-dom";
 
 export default function RecipesList() {
@@ -25,6 +26,8 @@ export default function RecipesList() {
   const [name, setName] = useState('');
   const [tagId, setTagId] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
+  const pageSize= 10000000000; // high page size to get all categories in one select 
+  const pageNumber = 1;  
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open modal
@@ -88,19 +91,19 @@ export default function RecipesList() {
     }
   };
 
-  const getAllTags = async () => {
-    try {
+  // const getAllTags = async () => {
+  //   try {
 
-      const response = await privateAxiosInstance.get(
-        TAGS_URLS.TAGS
-      );
-      setTags(response?.data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     const response = await privateAxiosInstance.get(
+  //       TAGS_URLS.TAGS
+  //     );
+  //     setTags(response?.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const getNameValue = (e) => {
     const nameValue = e.target.value.toLowerCase(); 
@@ -119,18 +122,42 @@ export default function RecipesList() {
     getAllRecipes(5, 1, name,tagId,e.target.value);
   }; 
 
-  useEffect(() => {
-    getAllRecipes(5, 1);
-    setCurrentPage(1);
-    getCategories({
-      setLoading:true,
-      setCategories,
-      setNumOfPagesArray,
-      fetchAll: true,
-    });
+  // useEffect(() => {
+  //   getAllRecipes(5, 1);
+  //   setCurrentPage(1);
+  //   getCategories({
+  //     setLoading:true,
+  //     setCategories,
+  //     setNumOfPagesArray,
+  //     fetchAll: true,
+  //   });
 
-    getAllTags();
-  }, []);
+
+  //       getAllTags();
+  // }, []);
+
+
+
+    useEffect(() => {
+          getAllRecipes(5, 1);
+          setCurrentPage(1);
+             getAllTags(setTags);
+      const fetchAll = async () => {
+        try {
+          await getCategories({
+            setLoading,
+            setCategories,
+            setNumOfPagesArray,
+            pageSize:10000000,
+            pageNumber:1,
+          });
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
+
+      fetchAll();
+    }, [pageSize, pageNumber]);
 
   return (
     <div>
@@ -226,7 +253,7 @@ export default function RecipesList() {
                         src={
                           recipe?.imagePath
                             ? `${IMAGE_URL}/${recipe?.imagePath}`
-                            : noImage // Use a string or variable directly, not an object
+                            : noImage 
                         }
                         width={80}
                       />

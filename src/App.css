@@ -11,10 +11,13 @@ input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;
 }
-
 input[type="password"]::-webkit-input-placeholder {
     /* Safari */
     display: none;
+}
+
+input[type="file"] {
+    background-color: rgba(240, 255, 239, 1) !important;
 }
 
 
@@ -62,14 +65,11 @@ i,input[placeholder] {
 .css-1dabzo2 {
     border: none !important;
 }
-.sidebar-container .ps-sidebar-container {
-    background-color: #1F263E!important;
-    height: 100% !important;
-}
+
 
 .sidebar-container .ps-sidebar-container {
     background-color: #1F263E!important;
-    height: 100vh !important;
+    height: 1000px !important;
     border-top-right-radius: 58px !important;
     top: 0 !important;
     bottom: 0 !important;

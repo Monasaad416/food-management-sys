@@ -3,12 +3,12 @@ import Header from "../../Shared/Header/Header";
 import recipiesHeader from "../../../assets/imgs/recipies-header.png";
 import NoData from "../../Shared/NoData/NoData";
 import { toast } from "react-toastify";
-import noImage from "../../../assets/imgs/no-img.png";
 import { privateAxiosInstance } from "../../../services/api/apiInstance";
 import { USER_URLS } from "../../../services/api/apiConfig";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
+import Pagination from "../../Shared/Pagination/Pagination";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
@@ -16,6 +16,8 @@ export default function UsersList() {
   const [showDelete, setShowDelete] = useState(false);
   const [userId, setuserId] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [numOfPagesArray, setNumOfPagesArray] = useState([]);
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open modal
@@ -62,6 +64,11 @@ export default function UsersList() {
       const response = await privateAxiosInstance.get(USER_URLS.USERS);
       console.log(response.data.data);
       setUsers(response?.data?.data);
+      setNumOfPagesArray(
+        Array(response?.data?.length)
+          .fill()
+          .map((_, index) => index + 1)
+      );
     } catch (err) {
       console.log(err);
     } finally {
@@ -176,6 +183,17 @@ export default function UsersList() {
         deletedItem={"user"}
       />
       {/* End delete modal */}
+
+            {/* start pagination */}
+            <Pagination
+              loading={loading}
+              currentPage={currentPage}
+              getAllItems={getAllUsers}
+              setCurrentPage={setCurrentPage}
+              numOfPagesArray={numOfPagesArray}
+              items={users}
+            />
+            {/* End pagination */}
     </>
   );
 }

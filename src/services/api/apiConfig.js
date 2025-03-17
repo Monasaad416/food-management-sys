@@ -19,9 +19,12 @@ export const CATEGORIES_URLS = {
   UPDATE_CATEGORY: (id) => `Category/${id}`,
 };
 export const RECIPES_URLS = {
-    RECIPES: `Recipe`,
-    DELETE_RECIPE: (id) => `/Recipe/${id}`,
-}
+  RECIPES: `Recipe`,
+  DELETE_RECIPE: (id) => `/Recipe/${id}`,
+  CREATE_RECIPE: `Recipe`,
+  GET_RECIPE: (id) => `RECIPE/${id}`,
+  UPDATE_RECIPE: (id) => `RECIPE/${id}`,
+};
 
 export const TAGS_URLS = {
   TAGS: `tag`

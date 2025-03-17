@@ -18,10 +18,11 @@ export default function CategoriesList() {
   const [showCatForm, setShowCatForm] = useState(false); //add edit modal
   const [categoryId, setCategoryId] = useState(0);
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [numOfPagesArray, setNumOfPagesArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
+  const [editedCategory, setEditedCategory] = useState(null);
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open delete modal
@@ -66,9 +67,9 @@ export default function CategoriesList() {
 
         handleCloseDelete();
         getCategories(
-         setLoading ,
-         setCategories ,
-         setNumOfPagesArray ,
+          setLoading,
+          setCategories,
+          setNumOfPagesArray,
           5,
           1,
           name
@@ -101,14 +102,13 @@ export default function CategoriesList() {
   //   }
   // };
 
-
   useEffect(() => {
     getCategories({
-      setLoading ,
-      setCategories ,
-      setNumOfPagesArray ,
-      pageSize:5,
-      pageNumber:1
+      setLoading,
+      setCategories,
+      setNumOfPagesArray,
+      pageSize: 5,
+      pageNumber: 1,
     });
     setCurrentPage(1);
   }, []);
@@ -121,9 +121,9 @@ export default function CategoriesList() {
       setLoading,
       setCategories,
       setNumOfPagesArray,
-      pageSize:5,
-      pageNumber:1,
-      name:e.target.value
+      pageSize: 5,
+      pageNumber: 1,
+      name: e.target.value,
     });
   };
 
@@ -248,11 +248,24 @@ export default function CategoriesList() {
       {/* End delete modal */}
       {/* start add modal */}
       <CategoryData
-        categoryId={categoryId}
         showCatForm={showCatForm}
-        getCategories={getCategories()}
+
+        getAllCategories={(pageSize, pageNumber) =>
+          getCategories({
+            setLoading,
+            setCategories,
+            setNumOfPagesArray,
+            pageSize,
+            pageNumber,
+            name,
+          })
+        }
         handleCloseCatForm={handleCloseCatForm}
+        categoryId={categoryId}
+        editedCategory={editedCategory}
+        setEditedCategory={setEditedCategory}
       />
+
       {/* End add modal */}
       {/* start pagination */}
       <Pagination
@@ -265,14 +278,13 @@ export default function CategoriesList() {
             setNumOfPagesArray,
             pageSize,
             pageNumber,
-            name
+            name,
           })
         }
         setCurrentPage={setCurrentPage}
         numOfPagesArray={numOfPagesArray}
         items={categories}
       />
-
       {/* End pagination */}
     </>
   );
