@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
-import SideBar from '../Sidebar/Sidebar'
+
 import PropTypes from 'prop-types'
+import SideBar from '../Sidebar/Sidebar';
 
  function MasterLayout({loginData,logout}) {
   return (
