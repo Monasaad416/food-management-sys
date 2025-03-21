@@ -2,7 +2,8 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 
 import PropTypes from 'prop-types'
-import SideBar from '../SideBar/SideBar.jsx';
+import SideBar from '../Sidebar/Sidebar.jsx'; // Correct casing
+
 
  function MasterLayout({loginData,logout}) {
   return (
