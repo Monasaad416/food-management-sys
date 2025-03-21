@@ -21,13 +21,9 @@ export default function ForgetPassword() {
 
       console.log(response);
       navigate("/reset-password",{state:{email: data.email}});
-      toast.success(response?.data?.message,{
-        theme: "colored",
-      });
+      toast.success(response?.data?.message);
     } catch (error) {
-        toast.error( error.message, {
-          theme: "colored",
-        });
+        toast.error( error.message);
   
     }
   };

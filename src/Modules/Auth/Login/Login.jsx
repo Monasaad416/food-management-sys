@@ -27,13 +27,9 @@ function Login({ loginData }) {
       localStorage.setItem("token", response.data.token);
       loginData;
       navigate("/dashboard");
-      toast.success("Successfully logged in", {
-        theme: "colored",
-      });
+      toast.success("Successfully logged in");
     } catch (error) {
-        toast.error( error.message, {
-          theme: "colored",
-        });
+        toast.error( error.message);
     }
   };
 
@@ -110,7 +106,7 @@ function Login({ loginData }) {
           <p className="text-danger pb-2">{errors.password.message}</p>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <Link to="register" className="text-dark text-decoration-none">
+          <Link to="/register" className="text-dark text-decoration-none">
             Register Now?
           </Link>
           <Link

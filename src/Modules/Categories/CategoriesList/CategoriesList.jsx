@@ -31,6 +31,7 @@ export default function CategoriesList() {
 
   const handleCloseDelete = () => {
     setShowDelete(false); // Close delete modal
+    
     document.body.classList.remove("modal-open");
     document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
       backdrop.remove();
@@ -44,6 +45,8 @@ export default function CategoriesList() {
 
   const handleCloseCatForm = () => {
     setShowCatForm(false); // Close add edit modal
+    setCategoryId(0);
+    setName("");
     document.body.classList.remove("modal-open");
     document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
       backdrop.remove();
@@ -61,19 +64,18 @@ export default function CategoriesList() {
       );
 
       if (response.status === 200) {
-        toast.success("Category deleted successfully", {
+        toast.success(response?.data?.message || "Category deleted successfully", {
           theme: "colored",
         });
 
         handleCloseDelete();
-        getCategories(
-          setLoading,
-          setCategories,
-          setNumOfPagesArray,
-          5,
-          1,
-          name
-        );
+           getCategories({
+             setLoading,
+             setCategories,
+             setNumOfPagesArray,
+             pageSize: 5,
+             pageNumber: 1,
+           });
       } else {
         console.error("Expected an array but got:", response.data.data);
       }
@@ -136,19 +138,19 @@ export default function CategoriesList() {
         imgSrc={recipiesHeader}
         width={170}
       />
-      <div className="d-flex justify-content-between mx-4 my-5">
+      <div className="d-flex justify-content-between flex-direction-sm-row flex-direction-column mx-4 my-5">
         <div className="details">
-          <h3>Categories Table Details</h3>
+          <h3 className="fs-md-6 fs-3">Categories Table Details</h3>
           <span className="text-muted">You can check all details</span>
         </div>
         <div>
           <button
-            className="btn btn-custom fw-bold"
+            className="btn btn-custom fw-md-bold"
             data-bs-toggle="modal"
             data-bs-target="#catFormModal"
             onClick={() => handleShowCatForm()}
           >
-            Add New Category
+            Add Category
           </button>
         </div>
       </div>

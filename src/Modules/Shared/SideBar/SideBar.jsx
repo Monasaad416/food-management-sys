@@ -1,29 +1,81 @@
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Link, useNavigate } from 'react-router-dom';
 import sidearLogo from "../../../assets/imgs/sidebar-logo.png";
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { AuthContext } from '../../Context/Context.jsx';
+import { toast } from 'react-toastify';
+import { BeatLoader } from 'react-spinners';
 
-export default function SideBar() {
-  let navigate = useNavigate();
-  let logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+function SideBar() {
+  const navigate = useNavigate();
+  // collapse sidebar start
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  //toggle mobile menu start
+  const [isToggled, setIsToggled] = useState(false);
 
-  let changePassword = () => {
+  const [width,setWidth] = useState(0)
+  // const [displayMenuBtn, setDisplayMenuBtn] = useState(0);
+  const [breakPoint, setBreakPoint] = useState(false);
+  function getScreenSize(){
+    setWidth(window.innerWidth);
+  }
+
+  useEffect(()=>{
+    window.addEventListener("resize", getScreenSize);
+    if(width < 400 ){
+      setIsCollapsed(true)
+      // setDisplayMenuBtn("")
+      setBreakPoint(true)
+    } else{
+      setIsCollapsed(false)
+      // setDisplayMenuBtn("display");
+      setBreakPoint(false);
+    }
+    return () => {
+      window.removeEventListener("resize", getScreenSize);
+    }
+  },[width])
+
+
+  const authContext = useContext(AuthContext);
+  // Check if authContext is null
+  if (!authContext) {
+    return (
+      <div>
+        <BeatLoader color={"#009247"} loading={true} size={15} />
+      </div>
+    ); //  handle the null case
+  }
+  const { userData } = authContext;
+
+  const changePassword = () => {
     navigate("/change-password");
   };
-  // collapse sidebar start
-  let [isCollapsed, setItCollapsed] = useState(false);
 
-  let toggleCollapse = () => {
-    setItCollapsed(!isCollapsed);
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
   };
   // collapse sidebar end
 
-  //toggle mobile menu start
-  let [isToggled, setIsToggled] = useState(false);
   //toggle mobile menu end
+
+  const logout = () => {
+    try {
+      localStorage.removeItem("token");
+      navigate("/login");
+      toast.success("Logout Successfully!");
+      // setTimeout(() =>{
+
+      // }, 2000);
+    } catch (err) {
+      console.log(err);
+      toast.error("Logout Failed!", {
+        theme: "colored",
+      });
+    }
+  };
+
   return (
     <div className="sidebar-container vh-100">
       <button className="btn d-md-none">
@@ -33,7 +85,7 @@ export default function SideBar() {
         ></i>
       </button>
       <Sidebar
-        breakPoint="sm"
+        breakPoint={breakPoint ? "sm" : ""}
         transitionDuration={800}
         toggled={isToggled}
         onToggle={(value) => setIsToggled(value)}
@@ -52,19 +104,37 @@ export default function SideBar() {
               <MenuItem component={<Link to="/dashboard" />}>
                 <i className="fa fa-home mx-2"></i>Home{" "}
               </MenuItem>
-              <MenuItem component={<Link to="/dashboard/users" />}>
-                <i className="fa-solid fa-user-group mx-2"></i>Users{" "}
-              </MenuItem>
 
-              <MenuItem component={<Link to="/dashboard/categories" />}>
-                {" "}
-                <i className="fa-solid fa-calendar-days mx-2"></i> Categories
-              </MenuItem>
+              {userData?.userGroup != "SystemUser" ? (
+                <MenuItem component={<Link to="/dashboard/users" />}>
+                  <i className="fa-solid fa-user-group mx-2"></i>Users{" "}
+                </MenuItem>
+              ) : (
+                ""
+              )}
+
+              {userData?.userGroup != "SystemUser" ? (
+                <MenuItem component={<Link to="/dashboard/categories" />}>
+                  {" "}
+                  <i className="fa-solid fa-calendar-days mx-2"></i> Categories
+                </MenuItem>
+              ) : (
+                ""
+              )}
 
               <MenuItem component={<Link to="/dashboard/recipes" />}>
                 {" "}
                 <i className="fa-solid fa-list mx-2"></i> Recipes List
               </MenuItem>
+
+              {userData?.userGroup == "SystemUser" ? (
+                <MenuItem component={<Link to="/dashboard/favourits" />}>
+                  {" "}
+                  <i className="fa-solid fa-heart mx-2"></i> Favourits
+                </MenuItem>
+              ) : (
+                ""
+              )}
             </div>
             <div>
               <MenuItem onClick={changePassword} className="mt-5">
@@ -72,7 +142,13 @@ export default function SideBar() {
                 <i className="fa-solid fa-lock mx-2"></i> Change Password
               </MenuItem>
 
-              <MenuItem onClick={logout}>
+              <MenuItem
+                onClick={() => {
+                  console.log("Navigating to /dashboard");
+                  logout();
+                  navigate("/login");
+                }}
+              >
                 {" "}
                 <i className="fa-solid fa-right-from-bracket mx-2"></i> Logout
               </MenuItem>
@@ -83,3 +159,11 @@ export default function SideBar() {
     </div>
   );
 }
+
+// Add prop types validation
+SideBar.propTypes = {
+  authContext: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+export default SideBar;
+

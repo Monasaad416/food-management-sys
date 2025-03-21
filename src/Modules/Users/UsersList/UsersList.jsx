@@ -14,14 +14,18 @@ export default function UsersList() {
   const [users, setUsers] = useState([]);
   //delete modal
   const [showDelete, setShowDelete] = useState(false);
-  const [userId, setuserId] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [numOfPagesArray, setNumOfPagesArray] = useState([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
+  const [group, setGroup] = useState("");
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open modal
-    setuserId(id);
+    setUserId(id);
   };
 
   const handleCloseDelete = () => {
@@ -32,7 +36,8 @@ export default function UsersList() {
     });
   };
 
-  const deleteUser = async (userId) => {
+    const [userId, setUserId] = useState(0);
+  const deleteUser = async () => {
     try {
       console.log(userId);
       const response = await privateAxiosInstance.delete(
@@ -45,9 +50,7 @@ export default function UsersList() {
       if (response.status === 200) {
         toast.success("user deleted successfully");
 
-        setUsers((prevusers) =>
-          prevusers.filter((user) => user.id !== userId)
-        );
+        setUsers((prevusers) => prevusers.filter((user) => user.id !== userId));
 
         handleCloseDelete();
         getAllUsers(); // Refetch users after successful deletion
@@ -58,10 +61,19 @@ export default function UsersList() {
       console.log(err);
     }
   };
-  const getAllUsers = async () => {
+  const getAllUsers = async (pageSize, pageNumber, name, email, country,group) => {
     try {
       setLoading(true);
-      const response = await privateAxiosInstance.get(USER_URLS.USERS);
+      const response = await privateAxiosInstance.get(USER_URLS.USERS, {
+        params: {
+          pageSize: pageSize,
+          pageNumber: pageNumber,
+          userName: name,
+          email: email,
+          country: country,
+          groups: group,
+        },
+      });
       console.log(response.data.data);
       setUsers(response?.data?.data);
       setNumOfPagesArray(
@@ -80,6 +92,27 @@ export default function UsersList() {
     getAllUsers();
   }, []);
 
+   const getNameValue = (e) => {
+     const nameValue = e.target.value.toLowerCase();
+     console.log(nameValue);
+     setName(nameValue);
+     getAllUsers(5, 1, e.target.value, email,country,group);
+   };
+
+   const getEmailValue = (e) => {
+     setEmail(e.target.value);
+     getAllUsers(5, 1, name, e.target.value, country,group);
+   };
+
+   const getCountryValue = (e) => {
+     setCountry(e.target.value);
+     getAllUsers(5, 1, name, email, e.target.value,group);
+   }; 
+  const getGroupValue = (e) => {
+    setCountry(e.target.value);
+    getAllUsers(5, 1, name, email,country, e.target.value);
+  }; 
+
   return (
     <>
       <Header
@@ -93,6 +126,52 @@ export default function UsersList() {
         <div className="details">
           <h3>users Table Details</h3>
           <span className="text-muted">You can check all details</span>
+        </div>
+      </div>
+      <div className="row my-5 mx-4">
+        <div className="col-2">
+          {/* <i className="fa-solid fa-magnifying-glass"></i> */}
+          <input
+            type="text"
+            className="form-control"
+            placeholder="search by name ..."
+            onChange={getNameValue}
+          />
+        </div>
+        <div className="col-4">
+          {/* <i className="fa-solid fa-magnifying-glass"></i> */}
+          <input
+            type="text"
+            className="form-control"
+            placeholder="search by email ..."
+            onChange={getEmailValue}
+          />
+        </div>
+        <div className="col-3">
+          {/* <i className="fa-solid fa-magnifying-glass"></i> */}
+          <input
+            type="text"
+            className="form-control"
+            placeholder="search by country ..."
+            onChange={getCountryValue}
+          />
+        </div>
+        <div className="col-2">
+          {/* <i className="fa-solid fa-magnifying-glass"></i> */}
+          <select
+            className="form-select"
+            aria-label="Default select example"
+            onChange={getGroupValue}
+          >
+            <option value="">group</option>
+
+            <option key="SystemUser" value="2">
+              SystemUser
+            </option>
+            <option key="SystemAdmin" value="1">
+              SystemAdmin
+            </option>
+          </select>
         </div>
       </div>
       <div className="mx-4">
@@ -154,7 +233,7 @@ export default function UsersList() {
                             href="#"
                             data-bs-toggle="modal"
                             data-bs-target="#deleteModal"
-                            onClick={() => handleShowDelete(user.id)}
+                            onClick={() => handleShowDelete(user?.id)}
                             className="d-flex align-items-center text-decoration-none action-anchor"
                           >
                             <i className="fa fa-trash d-inline action-icon me-1"></i>
@@ -166,8 +245,8 @@ export default function UsersList() {
                   </td>
                 </tr>
               ))}
-              </tbody>
-            </table>
+            </tbody>
+          </table>
         ) : (
           <div className="d-flex justify-content-center align-items-center">
             <NoData />
@@ -184,16 +263,16 @@ export default function UsersList() {
       />
       {/* End delete modal */}
 
-            {/* start pagination */}
-            <Pagination
-              loading={loading}
-              currentPage={currentPage}
-              getAllItems={getAllUsers}
-              setCurrentPage={setCurrentPage}
-              numOfPagesArray={numOfPagesArray}
-              items={users}
-            />
-            {/* End pagination */}
+      {/* start pagination */}
+      <Pagination
+        loading={loading}
+        currentPage={currentPage}
+        getAllItems={getAllUsers}
+        setCurrentPage={setCurrentPage}
+        numOfPagesArray={numOfPagesArray}
+        items={users}
+      />
+      {/* End pagination */}
     </>
   );
 }

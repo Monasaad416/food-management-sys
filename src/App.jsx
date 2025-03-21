@@ -23,182 +23,192 @@ import { jwtDecode } from 'jwt-decode';
 import ProtectedRoute from './Modules/Shared/ProtectedRoute/ProtectedRoute';
 
 function App() {
-      let [loginData, setLoginData] = useState(null);
-      
- let savedLoginData = () => {
-   let encodedToken = localStorage.getItem("token");
-  //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
-   if (encodedToken) {
-     let decodedToken = jwtDecode(encodedToken);
-    //  console.log("Decoded Token:", decodedToken); // Verify decoded token
-     setLoginData(decodedToken);
-   } else {
-     console.error("No token found in localStorage.");
-   }
- };
+  let [loginData, setLoginData] = useState(() => {
+    let token = localStorage.getItem("token");
+    return token ? jwtDecode(token) : null;
+  });
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    try {
-      savedLoginData();
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      localStorage.removeItem("token"); // Remove invalid token
-      setLoginData(null); // Clear state
+  let savedLoginData = () => {
+    let encodedToken = localStorage.getItem("token");
+    //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
+    if (encodedToken) {
+      let decodedToken = jwtDecode(encodedToken);
+      //  console.log("Decoded Token:", decodedToken); // Verify decoded token
+      setLoginData(decodedToken);
+    } else {
+      console.error("No token found in localStorage.");
     }
-  }
-}, []);
+  };
 
-     const router = createBrowserRouter([
-       {
-         path: "/",
-         element: <AuthLayout />,
-         errorElement: (
-           <Suspense fallback="Loading Please Wait ...">
-             <NotFound />
-           </Suspense>
-         ),
-         children: [
-           {
-             index: true,
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <Login loginData={loginData} />
-               </Suspense>
-             ),
-           },
-           {
-             path: "login",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <Login loginData={loginData} />
-               </Suspense>
-             ),
-           },
-           {
-             path: "register",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <Register />
-               </Suspense>
-             ),
-           },
-           {
-             path: "change-password",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <ChangePassword />
-               </Suspense>
-             ),
-           },
-           {
-             path: "forget-password",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <ForgetPassword />
-               </Suspense>
-             ),
-           },
-           {
-             path: "reset-password",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <ResetPassword />
-               </Suspense>
-             ),
-           },
-           {
-             path: "verify-account",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <VerifyAccount />
-               </Suspense>
-             ),
-           },
-         ],
-       },
-       {
-         path: "/dashboard",
-         element: (
-           <ProtectedRoute>
-             <MasterLayout loginData={loginData} />
-           </ProtectedRoute>
-         ),
-         errorElement: (
-           <Suspense fallback="Loading Please Wait ...">
-             <NotFound />
-           </Suspense>
-         ),
-         children: [
-           {
-             index: true,
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <Dashboard />
-               </Suspense>
-             ),
-           },
-           {
-             path: "recipes",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <RecipecList />
-               </Suspense>
-             ),
-           },
-           {
-             path: "recipes/create-recipe",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <RecipeData />
-               </Suspense>
-             ),
-           },
-           {
-             path: "recipes/:recipeId",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <RecipeData />
-               </Suspense>
-             ),
-           },
-           {
-             path: "categories",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <CategoriesList />
-               </Suspense>
-             ),
-           },
-           {
-             path: "category-data",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <CategoryData />
-               </Suspense>
-             ),
-           },
-           {
-             path: "users",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <UsersList />
-               </Suspense>
-             ),
-           },
-           {
-             path: "favourits",
-             element: (
-               <Suspense fallback="Loading Please Wait ...">
-                 <FavouritsList />
-               </Suspense>
-             ),
-           },
-         ],
-       },
-     ]);
+  let logout = () => {
+    localStorage.removeItem("token");
+    setLoginData(null);
+  };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        savedLoginData();
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        setLoginData(null); 
+      }
+    } else {
+      setLoginData(null); 
+    }
+  }, []); 
+
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <AuthLayout />,
+      errorElement: (
+        <Suspense fallback="Loading Please Wait ...">
+          <NotFound />
+        </Suspense>
+      ),
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <Login loginData={loginData} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "login",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <Login loginData={loginData} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "register",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <Register />
+            </Suspense>
+          ),
+        },
+        {
+          path: "change-password",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <ChangePassword />
+            </Suspense>
+          ),
+        },
+        {
+          path: "forget-password",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <ForgetPassword />
+            </Suspense>
+          ),
+        },
+        {
+          path: "reset-password",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <ResetPassword />
+            </Suspense>
+          ),
+        },
+        {
+          path: "verify-account",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <VerifyAccount />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/dashboard",
+      element: (
+        <ProtectedRoute>
+          <MasterLayout loginData={loginData} logout={logout} />
+        </ProtectedRoute>
+      ),
+      errorElement: (
+        <Suspense fallback="Loading Please Wait ...">
+          <NotFound />
+        </Suspense>
+      ),
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <Dashboard loginData={loginData} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "recipes",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <RecipecList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "recipes/create-recipe",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <RecipeData />
+            </Suspense>
+          ),
+        },
+        {
+          path: "recipes/:recipeId",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <RecipeData />
+            </Suspense>
+          ),
+        },
+        {
+          path: "categories",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <CategoriesList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "category-data",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <CategoryData />
+            </Suspense>
+          ),
+        },
+        {
+          path: "users",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <UsersList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "favourits",
+          element: (
+            <Suspense fallback="Loading Please Wait ...">
+              <FavouritsList />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+  ]);
 
   return (
     <>

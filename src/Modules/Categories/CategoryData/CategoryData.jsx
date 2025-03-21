@@ -20,16 +20,12 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
     try {
       await privateAxiosInstance.post(CATEGORIES_URLS.CREATE_CATEGORY, data);
 
-      toast.success("New category created successfully", {
-        theme: "colored",
-      });
+      toast.success("New category created successfully");
 
       getAllCategories();
       handleCloseCatForm();
     } catch (error) {
-      toast.error(error.message, {
-        theme: "colored",
-      });
+      toast.error(error.message);
     }
   };
   //add category end
@@ -56,6 +52,8 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
             theme: "colored",
           });
         }
+      } else {
+        setValue("name"," ");
       }
     }, [categoryId, setEditedCategory,setValue]); // Only changes when categoryId or setEditedCategory changes
   
@@ -67,16 +65,13 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
     try {
       await privateAxiosInstance.put(CATEGORIES_URLS.UPDATE_CATEGORY(categoryId), data);
 
-      toast.success("Category updated successfully", {
-        theme: "colored",
-      });
+      toast.success("Category updated successfully");
 
       getAllCategories();
+      setEditedCategory(null);
       handleCloseCatForm();
     } catch (error) {
-      toast.error(error.message, {
-        theme: "colored",
-      });
+      toast.error(error.message);
     }
   };
 ;

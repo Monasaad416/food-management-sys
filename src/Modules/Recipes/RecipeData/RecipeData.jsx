@@ -98,9 +98,7 @@ export default function RecipeData() {
           );
           navigate("/dashboard/recipes");
 
-          toast.success('Category Updated Successfully', {
-            theme: "colored",
-          });
+          toast.success('Category Updated Successfully');
         } else {
           const response = await privateAxiosInstance.post(
             RECIPES_URLS.CREATE_RECIPE,
@@ -108,17 +106,13 @@ export default function RecipeData() {
           );
           navigate("/dashboard/recipes");
 
-          toast.success(response?.data?.message, {
-            theme: "colored",
-          });
+          toast.success(response?.data?.message);
         }
 
 
    
       } catch (error) {
-          toast.error( error.message, {
-            theme: "colored",
-          });
+          toast.error( error.message);
       }
     }; 
 

@@ -100,8 +100,8 @@ export default function ResetPassword() {
             })}
           />
         </div>
-        {errors.password && (
-          <p className="text-danger pb-2">{errors.password.message}</p>
+        {errors.seed && (
+          <p className="text-danger pb-2">{errors.seed.message}</p>
         )}
         {/* New Password */}
         <div className="input-group mb-3">

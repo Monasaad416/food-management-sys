@@ -69,7 +69,7 @@ i,input[placeholder] {
 
 .sidebar-container .ps-sidebar-container {
     background-color: #1F263E!important;
-    height: 1000px !important;
+    height: 1500px !important;
     border-top-right-radius: 58px !important;
     top: 0 !important;
     bottom: 0 !important;
@@ -105,6 +105,7 @@ i,input[placeholder] {
 
 .header {
     background-color: var(--mainGreen) !important;
+
 }
 
 /* categories styling start*/
@@ -113,6 +114,7 @@ i,input[placeholder] {
     color: #fff !important;
     padding: 10px 50px !important;
 }
+
 /* categories styling end*/
 
 
@@ -181,7 +183,7 @@ i,input[placeholder] {
 td {
     color: rgba(31, 38, 62, 1) !important;
 }
-
+/* 
 @media (max-width: 1400px) {    
 .caption h3 {
     font-size: 40px;
@@ -190,12 +192,18 @@ td {
     font-size: 40px;
 }}
 
-@media (max-width: 1200px) {    .caption h3 {
+@media (max-width: 1200px) {
+    .caption h3 {
     font-size: 35px;
+}.caption h6 {
+    font-size: 30px;
 }}
-@media (max-width: 992px) {   .caption h3 {
+@media (max-width: 992px) {
+       .caption h3 {
         font-size: 35px;
-    }}
+    }.caption h6 {
+    font-size: 30px;
+}}
 
 
 @media (max-width: 768px) {   .caption h3 {
@@ -207,7 +215,7 @@ td {
     .caption h3 {
         font-size: 20px;
     }
- }
+ } */
 
 
 /* notfound page start */
@@ -297,5 +305,27 @@ td {
 /* add recipe end */
 
 
+.card-img-top {
+    width: 100px !important;
+    margin: auto!important;
+}
+
+.fa-heart {
+    color: var(--mainGreen)!important;
+}
+
+.table thead {
+    background-color: gray !important;
+}
+
+/* mobile sidebar start */
+.display{
+    display: none;
+}
+.css-8i0j0q {
+
+     background-color: transparent !important;
+}
+/* mobile sidebar end */
 
 
