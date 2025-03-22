@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisibility";
-import { THEMECOLOR } from "../../../Services/THEME_COLORS";
-import { publicAxiosInstance } from "../../../services/api/apiInstance";
 import { USER_URLS } from "../../../services/api/apiConfig";
 import { useEffect } from "react";
+import { publicAxiosInstance } from "../../../services/api/apiInstance";
+import { THEMECOLOR } from "../../../services/THEME_COLORS";
 
 
 export default function Register() {

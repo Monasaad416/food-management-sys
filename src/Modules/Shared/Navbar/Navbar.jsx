@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import avatar from "../../../assets/imgs/avatar.png"
 import { useContext } from "react";
 import { AuthContext } from "../../Context/Context";
+import { BeatLoader } from "react-spinners";
 
 function Navbar() {
   const authContext = useContext(AuthContext);
