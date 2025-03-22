@@ -7,8 +7,7 @@ import PropTypes from "prop-types";
 import { publicAxiosInstance } from "../../../services/api/apiInstance.js";
 import { USER_URLS } from "../../../services/api/apiConfig.js";
 import { BeatLoader } from "react-spinners";
-import { THEMECOLOR } from "../../../services/THEME_COLORS.js";
-
+import { THEMECOLOR } from "../../../services/THEME_COLORS";
 
 function Login({ loginData }) {
   const {
