@@ -18,11 +18,6 @@ import SideMenu from '../SideMenu/SideMenu.jsx'; // Correct casing
     </div>
   );
 }
- // Add prop types validation
-MasterLayout.propTypes = {
-  loginData: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
-}
 
 
 export default MasterLayout;

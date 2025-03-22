@@ -36,7 +36,7 @@ export default function ForgetPassword() {
           password reset link
         </span>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-md-5">
         <div className="input-group my-3">
           <span className="input-group-text" id="basic-addon1">
             <i className="fa-regular fa-envelope"></i>

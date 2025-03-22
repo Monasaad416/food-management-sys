@@ -5,7 +5,7 @@
 
 }
 
-
+/* form inputs start */
 /* Hide the default show password icon */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
@@ -20,6 +20,49 @@ input[type="file"] {
     background-color: rgba(240, 255, 239, 1) !important;
 }
 
+
+
+/* Default placeholder style for larger screens */
+input::placeholder, 
+select::placeholder {
+  font-size: 16px; 
+  color: rgb(175, 176, 178) !important;
+}
+
+
+@media (max-width: 768px) {
+  input::placeholder, 
+  select::placeholder {
+    font-size: 10px; 
+    font-weight: 700;
+  }
+}
+
+/* form inputs end */
+
+/* tables start */
+.table{
+    font-size: 16px;
+}
+@media (max-width: 768px) {
+ .table {
+    font-size: 12px; 
+  }
+}
+
+/* tables end */
+
+
+.details p {
+    font-size: 22px;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+ .details p  {
+    font-size: 16px; 
+    font-weight: 500;
+  }
+}
 
 
 .auth-container {
@@ -86,6 +129,14 @@ i,input[placeholder] {
 
 }
 
+@media (max-width: 768px) {
+.sidebar-container .sidebar-logo {
+    width: 60px !important;
+    height: 60px !important;
+
+}
+}
+
 .sidebar-container .ps-menuitem-root {
     color: #fff !important;
 }
@@ -105,6 +156,8 @@ i,input[placeholder] {
 
 .header {
     background-color: var(--mainGreen) !important;
+    width: 90% !important;
+
 
 }
 
@@ -319,13 +372,7 @@ td {
 }
 
 /* mobile sidebar start */
-.display{
-    display: none;
-}
-.css-8i0j0q {
 
-     background-color: transparent !important;
-}
 /* mobile sidebar end */
 
 

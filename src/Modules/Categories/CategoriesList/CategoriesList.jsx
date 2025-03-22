@@ -138,14 +138,14 @@ export default function CategoriesList() {
         imgSrc={recipiesHeader}
         width={170}
       />
-      <div className="d-flex justify-content-between flex-direction-sm-row flex-direction-column mx-4 my-5">
+      <div className="d-flex justify-content-between flex-direction-sm-row flex-direction-column mx-md-4 my-5">
         <div className="details">
-          <h3 className="fs-md-6 fs-3">Categories Table Details</h3>
+          <p>Categories Table Details</p>
           <span className="text-muted">You can check all details</span>
         </div>
         <div>
           <button
-            className="btn btn-custom fw-md-bold"
+            className="btn btn-custom px-md-5 px-3"
             data-bs-toggle="modal"
             data-bs-target="#catFormModal"
             onClick={() => handleShowCatForm()}

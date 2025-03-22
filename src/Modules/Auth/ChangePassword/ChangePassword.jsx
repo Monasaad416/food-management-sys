@@ -52,7 +52,7 @@ export default function ChangePassword() {
           Please Enter Your Otp or Check Your Inbox
         </span>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-md-5">
         {/* Old Password */}
         <div className="input-group mb-3">
           <span className="input-group-text">

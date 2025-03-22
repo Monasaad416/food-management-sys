@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisibility";
 import { USER_URLS } from "../../../services/api/apiConfig";
-import { useEffect } from "react";
-import { publicAxiosInstance } from "../../../services/api/apiInstance";
+import { useEffect, useState } from "react";
+import { IMAGE_URL, publicAxiosInstance } from "../../../services/api/apiInstance";
 import { THEMECOLOR } from "../../../services/THEME_COLORS";
 
 
@@ -44,6 +44,25 @@ export default function Register() {
       });
     }
   };
+
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleDrop = (e) => {
+      e.preventDefault(); // Prevent the default browser behavior (e.g., opening the file).
+      const files = Array.from(e.dataTransfer.files); // Extract the dropped files.
+      setSelectedFiles((prev) => [...prev, ...files]); // Add files to state.
+    };
+
+    const handleDragOver = (e) => {
+      e.preventDefault(); // Allow the drop action.
+    };
+
+    const handleFileSelection = (e) => {
+      const files = Array.from(e.target.files); // For manual file selection via input.
+      setSelectedFiles((prev) => [...prev, ...files]);
+    };
+
+
   return (
     <>
       <div className="px-5 py-3">
@@ -235,17 +254,62 @@ export default function Register() {
           {/* profileImage */}
           <div className="col">
             <div className="input-group my-3">
-              <span className="input-group-text">
-                <i className="fa-solid fa-lock"></i>
-                <span className="devider"></span>
-              </span>
+  
+              <div>
+                {/* Drag and Drop Area */}
+                <div
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  style={{
+                    border: "2px dashed #26a965",
+                    backgroundColor: "#e3f2ea",
+                    borderRadius: "8px",
+                    padding: "20px",
+                    textAlign: "center",
+                    margin: "20px",
+                  }}
+                >
+                  <p className="d-inline">Drag & drop or{" "}</p>
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    id="fileInput"
+                    onChange={handleFileSelection}
+                  />
+                  <label
+                    htmlFor="fileInput"
+                    style={{
+                      display: "inline",
+                      color: "#009247",
+                    }}
+                  >
+                    Choose an item image {" "}
+                  </label>
 
-              <input
-                type="file"
-                className="form-control"
-                aria-label="profileImage"
-                {...register("profileImage")}
-              />
+                  <p className="d-inline"> to upload.</p>
+                </div>
+
+                {/* Display Uploaded Files */}
+                <div>
+                  <h4>Uploaded Files:</h4>
+                  <ul>
+                    {selectedFiles.map((file, index) => (
+                      <div key={index}>
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
             {errors.profileImage && (
               <p className="text-danger pb-2">{errors.profileImage.message}</p>

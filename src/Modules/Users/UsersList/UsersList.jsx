@@ -128,13 +128,13 @@ export default function UsersList() {
           <span className="text-muted">You can check all details</span>
         </div>
       </div>
-      <div className="row my-5 mx-4">
+      <div className="row my-5 mx-md-4">
         <div className="col-2">
           {/* <i className="fa-solid fa-magnifying-glass"></i> */}
           <input
             type="text"
             className="form-control"
-            placeholder="search by name ..."
+            placeholder="name"
             onChange={getNameValue}
           />
         </div>
@@ -143,7 +143,7 @@ export default function UsersList() {
           <input
             type="text"
             className="form-control"
-            placeholder="search by email ..."
+            placeholder="email"
             onChange={getEmailValue}
           />
         </div>
@@ -152,7 +152,7 @@ export default function UsersList() {
           <input
             type="text"
             className="form-control"
-            placeholder="search by country ..."
+            placeholder="country"
             onChange={getCountryValue}
           />
         </div>

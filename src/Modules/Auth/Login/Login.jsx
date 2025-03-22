@@ -3,13 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisibility.js";
-import PropTypes from "prop-types";
 import { publicAxiosInstance } from "../../../services/api/apiInstance.js";
 import { USER_URLS } from "../../../services/api/apiConfig.js";
 import { BeatLoader } from "react-spinners";
 import { THEMECOLOR } from "../../../services/THEME_COLORS";
 
-function Login({ loginData }) {
+export default function Login() {
   const {
     register,
     formState: { errors,isSubmitting },
@@ -24,7 +23,7 @@ function Login({ loginData }) {
       const response = await publicAxiosInstance.post(USER_URLS.LOGIN, data);
 
       localStorage.setItem("token", response.data.token);
-      loginData;
+
       navigate("/dashboard");
       toast.success("Successfully logged in");
     } catch (error) {
@@ -46,7 +45,7 @@ function Login({ loginData }) {
         <h3 className="h5">Log In</h3>
         <p className="text-muted">Welcome Back! Please enter your details</p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-md-5">
         {/* email */}
         <div className="input-group my-3">
           <span className="input-group-text" id="basic-addon1">
@@ -138,9 +137,3 @@ function Login({ loginData }) {
     </>
   );
 }
-
-// Add prop types validation
-Login.propTypes = {
-  loginData: PropTypes.func.isRequired,
-};
-export default Login;

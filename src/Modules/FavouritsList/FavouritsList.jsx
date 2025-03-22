@@ -201,16 +201,16 @@ export default function FavouritsList() {
           )}
         </div>
         <div className="row my-5 mx-4">
-          <div className="col-8">
+          <div className="col-md-8 my-2">
             {/* <i className="fa-solid fa-magnifying-glass"></i> */}
             <input
               type="text"
               className="form-control"
-              placeholder="search here..."
+              placeholder="recipe name..."
               onChange={getNameValue}
             />
           </div>
-          <div className="col-2">
+          <div className="col-md-2 my-2">
             <select
               className="form-select"
               aria-label="Default select example"
@@ -224,7 +224,7 @@ export default function FavouritsList() {
               ))}
             </select>
           </div>
-          <div className="col-2">
+          <div className="col-md-2 my-2">
             <select
               className="form-select"
               aria-label="Default select example"
@@ -253,14 +253,19 @@ export default function FavouritsList() {
               <div className="row">
                 {favRecipes.map((recipe) => (
                   <div className="col-md-4 my-3" key={recipe?.id}>
-                    <div className="card text-center py-2" >
-                      <i className="fa fa-2x fa-heart text-end me-3" onClick={()=>{handleShowDelete(recipe?.id)}}></i>
+                    <div className="card text-center py-2">
+                      <i
+                        className="fa fa-2x fa-heart text-end me-3"
+                        onClick={() => {
+                          handleShowDelete(recipe?.id);
+                        }}
+                      ></i>
                       <img
                         src={
-                              recipe?.recipe?.imagePath
-                                ? `${IMAGE_URL}/${recipe?.recipe?.imagePath}`
-                                : noImage
-                            }
+                          recipe?.recipe?.imagePath
+                            ? `${IMAGE_URL}/${recipe?.recipe?.imagePath}`
+                            : noImage
+                        }
                         className="card-img-top"
                         alt={recipe?.recipe?.name}
                       />

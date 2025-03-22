@@ -1,11 +1,24 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/Context';
+import { BeatLoader } from 'react-spinners';
 
 
 
-function ProtectedRoute({loginData, children}) {
+function ProtectedRoute({ children}) {
 
-    if(localStorage.getItem('token') || loginData) return children;
+    const authContext = useContext(AuthContext);
+    // Check if authContext is null
+    if (!authContext) {
+      return (
+        <div>
+          <BeatLoader color={"#a0a0a0"} loading={true} size={15} />
+        </div>
+      ); //  handle the null case
+    }
+    const { userData } = authContext;
+    if (localStorage.getItem("token") || userData) return children;
     else return <Navigate to="/login" />;
 }
 

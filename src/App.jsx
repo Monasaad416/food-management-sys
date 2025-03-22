@@ -19,46 +19,46 @@ import CategoryData from './Modules/Categories/CategoryData/CategoryData';
 import UsersList from './Modules/Users/UsersList/UsersList';
 import FavouritsList from './Modules/FavouritsList/FavouritsList';
 import { ToastContainer } from 'react-toastify';
-import { jwtDecode } from 'jwt-decode';
+
 import ProtectedRoute from './Modules/Shared/ProtectedRoute/ProtectedRoute';
 
 function App() {
-  let [loginData, setLoginData] = useState(() => {
-    let token = localStorage.getItem("token");
-    return token ? jwtDecode(token) : null;
-  });
+  // let [loginData, setLoginData] = useState(() => {
+  //   let token = localStorage.getItem("token");
+  //   return token ? jwtDecode(token) : null;
+  // });
 
-  let savedLoginData = () => {
-    let encodedToken = localStorage.getItem("token");
-    //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
-    if (encodedToken) {
-      let decodedToken = jwtDecode(encodedToken);
-      //  console.log("Decoded Token:", decodedToken); // Verify decoded token
-      setLoginData(decodedToken);
-    } else {
-      console.error("No token found in localStorage.");
-    }
-  };
+  // let savedLoginData = () => {
+  //   let encodedToken = localStorage.getItem("token");
+  //   //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
+  //   if (encodedToken) {
+  //     let decodedToken = jwtDecode(encodedToken);
+  //     //  console.log("Decoded Token:", decodedToken); // Verify decoded token
+  //     setLoginData(decodedToken);
+  //   } else {
+  //     console.error("No token found in localStorage.");
+  //   }
+  // };
 
-  let logout = () => {
-    localStorage.removeItem("token");
-    setLoginData(null);
-  };
+  // let logout = () => {
+  //   localStorage.removeItem("token");
+  //   setLoginData(null);
+  // };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        savedLoginData();
-      } catch (error) {
-        console.error("Invalid token:", error);
-        localStorage.removeItem("token");
-        setLoginData(null); 
-      }
-    } else {
-      setLoginData(null); 
-    }
-  }, []); 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     try {
+  //       savedLoginData();
+  //     } catch (error) {
+  //       console.error("Invalid token:", error);
+  //       localStorage.removeItem("token");
+  //       setLoginData(null); 
+  //     }
+  //   } else {
+  //     setLoginData(null); 
+  //   }
+  // }, []); 
 
 
   const router = createBrowserRouter([
@@ -75,7 +75,7 @@ function App() {
           index: true,
           element: (
             <Suspense fallback="Loading Please Wait ...">
-              <Login loginData={loginData} />
+              <Login/>
             </Suspense>
           ),
         },
@@ -83,7 +83,7 @@ function App() {
           path: "login",
           element: (
             <Suspense fallback="Loading Please Wait ...">
-              <Login loginData={loginData} />
+              <Login />
             </Suspense>
           ),
         },
@@ -133,7 +133,7 @@ function App() {
       path: "/dashboard",
       element: (
         <ProtectedRoute>
-          <MasterLayout loginData={loginData} logout={logout} />
+          <MasterLayout />
         </ProtectedRoute>
       ),
       errorElement: (
@@ -146,7 +146,7 @@ function App() {
           index: true,
           element: (
             <Suspense fallback="Loading Please Wait ...">
-              <Dashboard loginData={loginData} />
+              <Dashboard  />
             </Suspense>
           ),
         },

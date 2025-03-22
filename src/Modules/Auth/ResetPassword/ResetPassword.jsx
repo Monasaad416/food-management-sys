@@ -57,7 +57,7 @@ export default function ResetPassword() {
           Please Enter Your Otp or Check Your Inbox
         </span>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-md-5">
         {/* email */}
         <div className="input-group my-3">
           <span className="input-group-text" id="basic-addon1">

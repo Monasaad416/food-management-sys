@@ -14,6 +14,7 @@ function AuthContextProvider({ children }) {
         const encodedUserToken = localStorage.getItem("token");
         if (encodedUserToken) {
             try {
+       
                 const decodedUserToken = jwtDecode(encodedUserToken);
                 console.log(decodedUserToken);
                 setUserData(decodedUserToken);

@@ -12,11 +12,11 @@ function SideMenu() {
   // collapse sidebar start
   const [isCollapsed, setIsCollapsed] = useState(false);
   //toggle mobile menu start
-  const [isToggled, setIsToggled] = useState(false);
+  // const [isToggled, setIsToggled] = useState(false);
 
   const [width,setWidth] = useState(0)
   // const [displayMenuBtn, setDisplayMenuBtn] = useState(0);
-  const [breakPoint, setBreakPoint] = useState(false);
+  // const [breakPoint, setBreakPoint] = useState(false);
   function getScreenSize(){
     setWidth(window.innerWidth);
   }
@@ -26,15 +26,13 @@ function SideMenu() {
     if(width < 400 ){
       setIsCollapsed(true)
       // setDisplayMenuBtn("")
-      setBreakPoint(true)
+      // setBreakPoint(true)
     } else{
       setIsCollapsed(false)
       // setDisplayMenuBtn("display");
-      setBreakPoint(false);
+      // setBreakPoint(false);
     }
-    return () => {
-      window.removeEventListener("resize", getScreenSize);
-    }
+
   },[width])
 
 
@@ -78,19 +76,18 @@ function SideMenu() {
 
   return (
     <div className="sidebar-container vh-100">
-      <button className="btn d-md-none">
+      {/* <button className="btn d-md-none">
         <i
           className="fa-solid fa-bars"
           onClick={() => setIsToggled(!isToggled)}
         ></i>
-      </button>
+      </button> */}
       <Sidebar
-        breakPoint={breakPoint ? "sm" : ""}
+
         transitionDuration={800}
-        toggled={isToggled}
-        onToggle={(value) => setIsToggled(value)}
+
         collapsed={isCollapsed}
-        className={`${isToggled} == true ? 'd-none' :'d-block'`}
+  
       >
         <Menu>
           <div className="d-flex flex-column justify-content-around align-items-around">
