@@ -2,17 +2,17 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 
 import PropTypes from 'prop-types'
-import SideBar from '../Sidebar/Sidebar.jsx'; // Correct casing
+import SideMenu from '../SideMenu/SideMenu.jsx'; // Correct casing
 
 
- function MasterLayout({loginData,logout}) {
+ function MasterLayout() {
   return (
     <div className="d-flex">
       <div className="">
-        <SideBar loginData={loginData} logout={logout} />
+        <SideMenu />
       </div>
       <div className="w-100">
-        <Navbar loginData={loginData} />
+        <Navbar />
         <Outlet />
       </div>
     </div>

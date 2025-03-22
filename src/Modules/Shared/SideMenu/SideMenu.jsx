@@ -7,7 +7,7 @@ import { AuthContext } from '../../Context/Context.jsx';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
 
-function SideBar() {
+function SideMenu() {
   const navigate = useNavigate();
   // collapse sidebar start
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -161,9 +161,9 @@ function SideBar() {
 }
 
 // Add prop types validation
-SideBar.propTypes = {
+SideMenu.propTypes = {
   authContext: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 };
-export default SideBar;
+export default SideMenu;
 

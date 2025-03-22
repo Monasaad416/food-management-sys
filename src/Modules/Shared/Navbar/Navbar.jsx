@@ -4,7 +4,16 @@ import { useContext } from "react";
 import { AuthContext } from "../../Context/Context";
 
 function Navbar() {
- let { userData } = useContext(AuthContext); 
+  const authContext = useContext(AuthContext);
+  // Check if authContext is null
+  if (!authContext) {
+    return (
+      <div>
+        <BeatLoader color={"#009247"} loading={true} size={15} />
+      </div>
+    ); //  handle the null case
+  }
+  const { userData } = authContext;
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light rounded-3 m-4">
