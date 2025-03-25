@@ -73,7 +73,9 @@ export default function FavouritsList() {
     const getAllFavRecipes = async (pageSize, pageNumber, name ,tagId, categoryId) => {
       try {
         setLoading(true);
-        const response = await privateAxiosInstance.get(FAVS_URLS.FAV_RECIPES, {
+        const response = await privateAxiosInstance.get(FAVS_URLS.FAV_RECIPES , {
+          headers: { Authorization: localStorage.getItem("token") },
+        } ,{
           params: {
             pageSize: pageSize,
             pageNumber: pageNumber,
@@ -82,7 +84,7 @@ export default function FavouritsList() {
             categoryId: categoryId,
           },
         });
-        console.log(response.data.data[5]);
+      
         setFavRecipes(response?.data?.data);
         setNumOfPagesArray(
           Array(response?.data?.totalNumberOfPages)
@@ -97,7 +99,7 @@ export default function FavouritsList() {
     };
 
     useEffect(() => {
-      getAllFavRecipes(6, 1);
+      getAllFavRecipes(3, 1);
       setCurrentPage(1);
       getAllTags(setTags);
       const fetchAll = async () => {
@@ -122,29 +124,30 @@ export default function FavouritsList() {
       const nameValue = e.target.value.toLowerCase();
       console.log(nameValue);
       setName(nameValue);
-      getAllFavRecipes(5, 1, nameValue, tagId, categoryId);
+      getAllFavRecipes(3, 1, nameValue, tagId, categoryId);
     };
 
     const getTagIdValue = (e) => {
       setTagId(e.target.value);
-      getAllFavRecipes(5, 1, name, e.target.value, categoryId);
+      getAllFavRecipes(3, 1, name, e.target.value, categoryId);
     };
 
     const getCategoryIdValue = (e) => {
       setCategoryId(e.target.value);
-      getAllFavRecipes(5, 1, name, tagId, e.target.value);
+      getAllFavRecipes(3, 1, name, tagId, e.target.value);
     }; 
 
 
-        
+
   const authContext = useContext(AuthContext);
   const { userData, getUserToken } = authContext || {};
 
   useEffect(() => {
-    if (authContext) {
-      getUserToken(); // Call only if authContext exists
+    if (getUserToken) {
+      getUserToken();
     }
-  }, [authContext, getUserToken]); 
+  }, [getUserToken]);
+; 
 
     return (
       <div>
@@ -153,7 +156,7 @@ export default function FavouritsList() {
           title="Items"
           description="You can now add your items that any user can order it from the Application and you can edit"
           imgSrc={recipiesHeader}
-          width={170} 
+          width={100} 
         />
         <div className="d-flex justify-content-between mx-4 my-5">
           <div className="details">

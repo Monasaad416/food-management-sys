@@ -91,20 +91,25 @@ export default function RecipesList() {
 
   const addToFavs = async (data) => {
     try {
-      const response = await privateAxiosInstance.post(
-        `${FAVS_URLS.CREATE_FAV_RECIPE}`,
-        {
-          recipeId: data?.recipeId, // Send recipeId from form data
-        },
-        {
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
 
-      console.log(response);
+      if(data?.recipeId) {
+              const response = await privateAxiosInstance.post(
+                `${FAVS_URLS.CREATE_FAV_RECIPE}`,
+                {
+                  recipeId: data?.recipeId, // Send recipeId from form data
+                },
+                {
+                  headers: { Authorization: localStorage.getItem("token") },
+                }
+              );
+                    console.log(response);
       handleCloseDetails();
       navigate("/dashboard/favourits");
       toast.success("Recipe added to favourite successfully");
+      }
+
+
+
     } catch (error) {
       console.error("Failed to add to favorites:", error);
     }
@@ -445,7 +450,7 @@ export default function RecipesList() {
                   })}
                   type="hidden"
                   className="form-control"
-                  defaultValue={recipe?.id} // Pre-fill the recipe ID
+                  defaultValue={recipe?.id} 
                   readOnly
                 />
 

@@ -31,9 +31,9 @@ function SideMenu() {
 
   useEffect(() => {
     if (getUserToken) {
-      getUserToken(); // Call only if getUserToken exists
+      getUserToken();
     }
-  }, [getUserToken]); // Only depend on getUserToken
+  }, [getUserToken]);
 
   const changePassword = () => {
     navigate("/change-password");

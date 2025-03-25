@@ -43,7 +43,12 @@ export default function UsersList() {
 
   const getUserById = async (id) => {
     console.log(id);
-    const response = await privateAxiosInstance.get(USER_URLS.GET_USER(id));
+    const response = await privateAxiosInstance.get(
+      USER_URLS.GET_USER(id),
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+    );
 
     console.log(response?.data);
 

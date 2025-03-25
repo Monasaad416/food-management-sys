@@ -400,12 +400,12 @@ td {
 /* add recipe end */
 
 .card {
-    height: 500px !important;
+    height: 300px !important;
 }
 
 .card-img-top {
-    width: 80% !important;
-    height: 300px !important;
+    width: 60% !important;
+    height: 150px !important;
     margin: auto!important;
 }
 

@@ -26,10 +26,12 @@ function AuthContextProvider({ children }) {
   }, []); // Stable reference with no dependencies
 
   useEffect(() => {
-    getUserToken();
+    if (getUserToken) {
+      getUserToken();
+    }
   }, [getUserToken]);
 
-  
+
   return (
     <AuthContext.Provider value={{ getUserToken, userData }}>
       {children}

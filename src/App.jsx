@@ -1,7 +1,7 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthLayout from "./Modules/Shared/AuthLayout/AuthLayout";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import NotFound from "./Modules/Shared/NotFound/NotFound";
 import Login from "./Modules/Auth/Login/Login";
 import Register from "./Modules/Auth/Register/Register";
