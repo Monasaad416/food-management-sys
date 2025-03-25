@@ -1,23 +1,22 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
-
-import PropTypes from 'prop-types'
 import SideMenu from '../SideMenu/SideMenu.jsx'; // Correct casing
 
 
- function MasterLayout() {
-  return (
-    <div className="d-flex">
-      <div className="">
-        <SideMenu />
-      </div>
-      <div className="w-100">
-        <Navbar />
-        <Outlet />
-      </div>
-    </div>
-  );
+export default function MasterLayout() {
+
+  
+  return <div className="d-flex ">
+ 
+ <SideMenu/>
+ 
+<div className="w-100 d-flex flex-column  vh-100 overflow-y-auto">
+<Navbar />
+ <div className="">
+ <Outlet/>
+ </div>
+</div>
+  </div>;
 }
 
 
-export default MasterLayout;

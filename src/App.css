@@ -112,10 +112,8 @@ i,input[placeholder] {
 
 .sidebar-container .ps-sidebar-container {
     background-color: #1F263E!important;
-    height: 1500px !important;
     border-top-right-radius: 58px !important;
-    top: 0 !important;
-    bottom: 0 !important;
+    height: 100vh; 
 }
 
 .sidebar-container .logo-link {
@@ -400,7 +398,7 @@ td {
 /* add recipe end */
 
 .card {
-    height: 300px !important;
+    height: 400px !important;
 }
 
 .card-img-top {
