@@ -156,10 +156,52 @@ i,input[placeholder] {
 
 .header {
     background-color: var(--mainGreen) !important;
-    width: 90% !important;
-
-
+    width: 98% !important;
+    position: relative;
+    background-image: 
+        url('../src/assets/imgs/Ellipse\ 215.png'),
+        url('../src/assets/imgs/Ellipse\ 215.png'),
+        url('../src/assets/imgs/Ellipse\ 215.png'),
+        url('../src/assets/imgs/Ellipse\ 217.png'),
+        url('../src/assets/imgs/Ellipse\ 217.png'),
+        url('../src/assets/imgs/Ellipse\ 217.png'),
+        url('../src/assets/imgs/Ellipse\ 217.png');
+    background-repeat: no-repeat, no-repeat, no-repeat,no-repeat,no-repeat,no-repeat;
+    background-position: -3% 90% , 50% 10% , 105% 90% , 5% 30% , 50% 90% , 64% 60% ,80% 30%;
+    background-size: 100px, 120px, 150px , 55px , 55px , 55px, 55px ;
+    }
+@media (max-width: 1400px) {    
+    .header {
+        width: 98%;
+    }
 }
+
+@media (max-width: 1200px) {
+    .header {
+        width: 98%;
+    }
+}
+@media (max-width: 992px) {
+    .header {
+        width: 95%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        width: 95%;
+    }
+}
+
+
+@media (max-width: 576px) { 
+    .header {
+        width: 80%;
+    }
+ } 
+
+
 
 /* categories styling start*/
 .btn-custom {
@@ -359,7 +401,7 @@ td {
 
 
 .card-img-top {
-    width: 100px !important;
+    width: 80% !important;
     margin: auto!important;
 }
 
@@ -375,4 +417,10 @@ td {
 
 /* mobile sidebar end */
 
-
+.user-group {
+    background-color: var(--mainGreen);
+    padding: 5px 10px;
+}
+.user-info {
+    color: var(--mainGreen)
+}

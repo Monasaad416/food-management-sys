@@ -1,28 +1,27 @@
 import Header from "../Shared/Header/Header";
 import dashboardHeader from "../../assets/imgs/dashboard-header.png"
 import FillRecipe from "../Shared/FillRecipe/FillRecipe";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Context/Context";
-import { BeatLoader } from "react-spinners";
+
 
 function Dashboard() {
-    const authContext = useContext(AuthContext);
-    // Check if authContext is null
-    if (!authContext) {
-      return (
-        <div>
-          <BeatLoader color={"#009247"} loading={true} size={15} />
-        </div>
-      ); //  handle the null case
-    }
+   const authContext = useContext(AuthContext); 
+   const { userData, getUserToken } = authContext || {}
+ 
+   useEffect(() => {
+     if (authContext) {
+       getUserToken(); // Call only if authContext exists
+     }
+   }, [authContext,getUserToken]);  
   return (
     <>
       <Header
         strong="Welcome"
-        title={authContext?.userData?.userName}
+        title={userData?.userName}
         description="This is a welcoming screen for the entry of the application , you can now see the option"
         imgSrc={dashboardHeader}
-        width="200"
+        width="180"
       />
 
       <FillRecipe  />

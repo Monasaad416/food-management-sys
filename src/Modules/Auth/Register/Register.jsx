@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { togglePasswordVisibility } from "../../../Utilities/TogglePasswordVisibility";
 import { USER_URLS } from "../../../services/api/apiConfig";
 import { useEffect, useState } from "react";
-import { IMAGE_URL, publicAxiosInstance } from "../../../services/api/apiInstance";
+import {  publicAxiosInstance } from "../../../services/api/apiInstance";
 import { THEMECOLOR } from "../../../services/THEME_COLORS";
 
 
@@ -32,7 +32,19 @@ export default function Register() {
   }, [password, confirmPassword, trigger]);
 
   const onSubmit = async (data) => {
+
     try {
+
+          const formData = new FormData();
+          for (let key in data) {
+            if (key === "profileImage") {
+              formData.append(key, data?.[key]?.[0]);
+            } else {
+              formData.append(key, data[key]);
+            }
+
+            console.log(formData);
+          }
       const response = await publicAxiosInstance.post(USER_URLS.REGISTER, data);
 
       // console.log(response);
@@ -69,11 +81,11 @@ export default function Register() {
         <h3 className="h5">Register</h3>
         <p className="text-muted">Welcome Back! Please details</p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-lg-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-lg-2">
         <div className="row">
           {/* username */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text" id="basic-addon1">
                 <i className="fa-regular fa-envelope"></i>
                 <span className="devider"></span>
@@ -85,6 +97,10 @@ export default function Register() {
                     value: /^[a-zA-Z0-9]*[0-9]+$/,
                     message:
                       "The userName must contain characters and end with numbers without spaces.",
+                  },
+                  maxLength: {
+                    value: 8, // Maximum of 8 characters
+                    message: "The userName must not exceed 8 characters.",
                   },
                 })}
                 type="text"
@@ -100,7 +116,7 @@ export default function Register() {
           </div>
           {/* email */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text" id="basic-addon1">
                 <i className="fa-regular fa-envelope"></i>
                 <span className="devider"></span>
@@ -129,7 +145,7 @@ export default function Register() {
         <div className="row">
           {/* country */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text" id="basic-addon1">
                 <i className="fa-regular fa-envelope"></i>
                 <span className="devider"></span>
@@ -151,7 +167,7 @@ export default function Register() {
           </div>
           {/* phonenumber */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text" id="basic-addon1">
                 <i className="fa-regular fa-envelope"></i>
                 <span className="devider"></span>
@@ -180,7 +196,7 @@ export default function Register() {
         <div className="row">
           {/*  Password */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text">
                 <i className="fa-solid fa-lock"></i>
                 <span className="devider"></span>
@@ -213,7 +229,7 @@ export default function Register() {
           </div>
           {/*  Password Confirmation */}
           <div className="col-md-6">
-            <div className="input-group my-3">
+            <div className="input-group my-1">
               <span className="input-group-text">
                 <i className="fa-solid fa-lock"></i>
                 <span className="devider"></span>
@@ -253,8 +269,7 @@ export default function Register() {
         <div className="row">
           {/* profileImage */}
           <div className="col">
-            <div className="input-group my-3">
-  
+            <div className="input-group my-1">
               <div>
                 {/* Drag and Drop Area */}
                 <div
@@ -268,8 +283,9 @@ export default function Register() {
                     textAlign: "center",
                     margin: "20px",
                   }}
+                  className=""
                 >
-                  <p className="d-inline">Drag & drop or{" "}</p>
+                  <p className="d-inline">Drag & drop or </p>
                   {/* Hidden file input */}
                   <input
                     type="file"
@@ -284,7 +300,7 @@ export default function Register() {
                       color: "#009247",
                     }}
                   >
-                    Choose an item image {" "}
+                    Choose an item image{" "}
                   </label>
 
                   <p className="d-inline"> to upload.</p>

@@ -5,47 +5,35 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../Context/Context.jsx';
 import { toast } from 'react-toastify';
-import { BeatLoader } from 'react-spinners';
+
 
 function SideMenu() {
   const navigate = useNavigate();
   // collapse sidebar start
   const [isCollapsed, setIsCollapsed] = useState(false);
-  //toggle mobile menu start
-  // const [isToggled, setIsToggled] = useState(false);
 
-  const [width,setWidth] = useState(0)
-  // const [displayMenuBtn, setDisplayMenuBtn] = useState(0);
-  // const [breakPoint, setBreakPoint] = useState(false);
-  function getScreenSize(){
+  const [width, setWidth] = useState(window.innerWidth);
+  function getScreenSize() {
     setWidth(window.innerWidth);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener("resize", getScreenSize);
-    if(width < 400 ){
-      setIsCollapsed(true)
-      // setDisplayMenuBtn("")
-      // setBreakPoint(true)
-    } else{
-      setIsCollapsed(false)
-      // setDisplayMenuBtn("display");
-      // setBreakPoint(false);
+    if (width < 400) {
+      setIsCollapsed(true);
+    } else {
+      setIsCollapsed(false);
     }
+  }, [width]);
 
-  },[width])
+  const authContext = useContext(AuthContext); 
+  const { userData, getUserToken } = authContext || {}
 
-
-  const authContext = useContext(AuthContext);
-  // Check if authContext is null
-  if (!authContext) {
-    return (
-      <div>
-        <BeatLoader color={"#009247"} loading={true} size={15} />
-      </div>
-    ); //  handle the null case
-  }
-  const { userData } = authContext;
+  useEffect(() => {
+    if (authContext) {
+      getUserToken(); // Call only if authContext exists
+    }
+  }, [authContext,getUserToken]); 
 
   const changePassword = () => {
     navigate("/change-password");
@@ -82,13 +70,7 @@ function SideMenu() {
           onClick={() => setIsToggled(!isToggled)}
         ></i>
       </button> */}
-      <Sidebar
-
-        transitionDuration={800}
-
-        collapsed={isCollapsed}
-  
-      >
+      <Sidebar transitionDuration={800} collapsed={isCollapsed}>
         <Menu>
           <div className="d-flex flex-column justify-content-around align-items-around">
             <div>

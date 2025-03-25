@@ -23,6 +23,7 @@ export default function Login() {
       const response = await publicAxiosInstance.post(USER_URLS.LOGIN, data);
 
       localStorage.setItem("token", response.data.token);
+      
 
       navigate("/dashboard");
       toast.success("Successfully logged in");
@@ -40,7 +41,7 @@ export default function Login() {
 
   //spinner end
   return (
-    <>
+    <div className="m-auto">
       <div className="px-5 py-3">
         <h3 className="h5">Log In</h3>
         <p className="text-muted">Welcome Back! Please enter your details</p>
@@ -134,6 +135,6 @@ export default function Login() {
           )}
         </button>
       </form>
-    </>
+    </div>
   );
 }

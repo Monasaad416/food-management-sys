@@ -1,20 +1,23 @@
-
 import Header from "../../Shared/Header/Header";
 import recipiesHeader from "../../../assets/imgs/recipies-header.png";
 import NoData from "../../Shared/NoData/NoData";
 import { toast } from "react-toastify";
-import { privateAxiosInstance } from "../../../services/api/apiInstance";
+import {
+  IMAGE_URL,
+  privateAxiosInstance,
+} from "../../../services/api/apiInstance";
 import { USER_URLS } from "../../../services/api/apiConfig";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import Pagination from "../../Shared/Pagination/Pagination";
+import noImage from "../../../assets/imgs/avatar.png";
+import formatDate from "../../../Utilities/FormatDate";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
-  //delete modal
   const [showDelete, setShowDelete] = useState(false);
-
+  const [showDetails, setShowDetails] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [numOfPagesArray, setNumOfPagesArray] = useState([]);
@@ -22,6 +25,8 @@ export default function UsersList() {
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [group, setGroup] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedUser, setSelectedUser] = useState({});
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open modal
@@ -36,7 +41,29 @@ export default function UsersList() {
     });
   };
 
-    const [userId, setUserId] = useState(0);
+  const getUserById = async (id) => {
+    console.log(id);
+    const response = await privateAxiosInstance.get(USER_URLS.GET_USER(id));
+
+    console.log(response?.data);
+
+    setSelectedUser(response?.data);
+  };
+  const handleShowDetails = (id) => {
+    setShowDetails(true); // Open modal
+    setSelectedUserId(id);
+    getUserById(id);
+  };
+
+  const handleCloseDetails = () => {
+    setShowDetails(false); // Close modal
+    document.body.classList.remove("modal-open");
+    document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
+      backdrop.remove();
+    });
+  };
+
+  const [userId, setUserId] = useState(0);
   const deleteUser = async () => {
     try {
       console.log(userId);
@@ -61,7 +88,14 @@ export default function UsersList() {
       console.log(err);
     }
   };
-  const getAllUsers = async (pageSize, pageNumber, name, email, country,group) => {
+  const getAllUsers = async (
+    pageSize,
+    pageNumber,
+    name,
+    email,
+    country,
+    group
+  ) => {
     try {
       setLoading(true);
       const response = await privateAxiosInstance.get(USER_URLS.USERS, {
@@ -74,10 +108,10 @@ export default function UsersList() {
           groups: group,
         },
       });
-      console.log(response.data.data);
+      console.log(response?.data?.data?.length);
       setUsers(response?.data?.data);
       setNumOfPagesArray(
-        Array(response?.data?.length)
+        Array(response?.data?.data?.length)
           .fill()
           .map((_, index) => index + 1)
       );
@@ -92,26 +126,26 @@ export default function UsersList() {
     getAllUsers();
   }, []);
 
-   const getNameValue = (e) => {
-     const nameValue = e.target.value.toLowerCase();
-     console.log(nameValue);
-     setName(nameValue);
-     getAllUsers(5, 1, e.target.value, email,country,group);
-   };
+  const getNameValue = (e) => {
+    const nameValue = e.target.value.toLowerCase();
+    console.log(nameValue);
+    setName(nameValue);
+    getAllUsers(5, 1, e.target.value, email, country, group);
+  };
 
-   const getEmailValue = (e) => {
-     setEmail(e.target.value);
-     getAllUsers(5, 1, name, e.target.value, country,group);
-   };
+  const getEmailValue = (e) => {
+    setEmail(e.target.value);
+    getAllUsers(5, 1, name, e.target.value, country, group);
+  };
 
-   const getCountryValue = (e) => {
-     setCountry(e.target.value);
-     getAllUsers(5, 1, name, email, e.target.value,group);
-   }; 
-  const getGroupValue = (e) => {
+  const getCountryValue = (e) => {
     setCountry(e.target.value);
-    getAllUsers(5, 1, name, email,country, e.target.value);
-  }; 
+    getAllUsers(5, 1, name, email, e.target.value, group);
+  };
+  const getGroupValue = (e) => {
+    setGroup(e.target.value);
+    getAllUsers(5, 1, name, email, country, e.target.value);
+  };
 
   return (
     <>
@@ -220,11 +254,12 @@ export default function UsersList() {
                           <a
                             href="#"
                             data-bs-toggle="modal"
-                            data-bs-target="#catFormModal"
+                            data-bs-target="#showModal"
+                            onClick={() => handleShowDetails(user?.id)}
                             className="d-flex align-items-center text-decoration-none action-anchor"
                           >
-                            <i className="fa-solid fa-eye d-inline action-icon me-1"></i>
-                            <span> View</span>
+                            <i className="fa fa-eye d-inline action-icon me-1"></i>
+                            <span> Show</span>
                           </a>
                         </li>
 
@@ -262,6 +297,83 @@ export default function UsersList() {
         deletedItem={"user"}
       />
       {/* End delete modal */}
+
+      {/* start show details modal */}
+      <div
+        className={`modal ${showDetails == true ? "show fade" : ""}`}
+        id="showModal"
+        tabIndex={-1}
+        style={{ display: showDetails == true ? "block" : "none" }}
+        aria-hidden={!showDetails}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header"></div>
+            <div className="modal-body text-center">
+              <div className="d-flex justify-content-between">
+                <div>
+                  <h5 className="delete-title my-4 fw-bold"></h5>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    className="custom-btn-close "
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={handleCloseDetails}
+                  >
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <img
+                src={
+                  selectedUser?.imagePath
+                    ? `${IMAGE_URL}/${selectedUser?.imagePath}`
+                    : noImage
+                }
+                width={70}
+                height={70}
+                alt="user avatar"
+                className="text-center"
+              />
+              <div className="m-auto">
+                <p className="mb-1 mt-3">
+                  <strong className="h2 text-dark">
+                    {" "}
+                    {selectedUser.userName}
+                  </strong>
+                </p>
+
+                <p className="mb-1 user-group rounded-4  my-2 w-50 m-auto text-white">
+                  <strong className="">Group</strong> :{" "}
+                  {selectedUser?.group?.name}
+                </p>
+                <div className="text-start">
+                  {" "}
+                  <p className="mb-1 mt-5">
+                    <strong className="user-info">Email</strong> :{" "}
+                    {selectedUser?.email}
+                  </p>
+                  <p className="mb-1">
+                    <strong className="user-info ">Country</strong> :{" "}
+                    {selectedUser?.country}
+                  </p>{" "}
+                  <p className="mb-1">
+                    <strong className="user-info">Phone Number</strong> :{" "}
+                    {selectedUser?.phoneNumber}
+                  </p>
+                  <p className="mb-1">
+                    <strong className="user-info ">Registration Date</strong> :{" "}
+                    {formatDate(selectedUser?.creationDate)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* End show details modal */}
 
       {/* start pagination */}
       <Pagination

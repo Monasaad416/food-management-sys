@@ -1,20 +1,19 @@
 
 import avatar from "../../../assets/imgs/avatar.png"
-import { useContext  } from "react";
+import { useContext, useEffect  } from "react";
 import { AuthContext } from "../../Context/Context";
-import { BeatLoader } from "react-spinners";
+
 
 function Navbar() {
 
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    return (
-      <div>
-        <BeatLoader color={"#009247"} loading={true} size={15} />
-      </div>
-    ); 
-  }
-  const { userData } = authContext;
+  const authContext = useContext(AuthContext); 
+  const { userData, getUserToken } = authContext || {}
+
+  useEffect(() => {
+    if (authContext) {
+      getUserToken(); // Call only if authContext exists
+    }
+  }, [authContext,getUserToken]); 
   
   return (
     <>
@@ -24,7 +23,7 @@ function Navbar() {
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#">
                 <img src={avatar} alt="avatar" />
-                {userData?.userName}
+                <p className="mx-2 d-inline">{userData?.userName}</p>
               </a>
             </li>
           </ul>

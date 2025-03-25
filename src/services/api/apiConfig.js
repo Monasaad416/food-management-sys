@@ -1,5 +1,3 @@
-
-
 export const USER_URLS = {
   LOGIN: `Users/Login`,
   REGISTER: `Users/Register`,
@@ -8,9 +6,9 @@ export const USER_URLS = {
   CHANGE_PASSWORD: `Users/ChangePassword`,
   USERS: `Users`,
   DELETE_USER: (id) => `Users/${id}`,
-  VERIFY_ACCOUNT:`/Users/verify`
+  VERIFY_ACCOUNT: `/Users/verify`,
+  GET_USER: (id) => `Users/${id}`,
 };
-
 
 export const CATEGORIES_URLS = {
   CATEGORIES: `Category`,
@@ -28,7 +26,7 @@ export const RECIPES_URLS = {
 };
 
 export const TAGS_URLS = {
-  TAGS: `tag`
+  TAGS: `tag`,
 };
 export const FAVS_URLS = {
   FAV_RECIPES: `userRecipe`,
@@ -36,10 +34,8 @@ export const FAVS_URLS = {
   DELETE_FAV_RECIPE: (id) => `/userRecipe/${id}`,
 };
 
-
-
 // let [loginData, setLoginData] = useState(() => {
-//   const token = localStorage.getItem("token");
+//   const token = localStorage.getItem("userToken");
 //   if (token) {
 //     try {
 //       return jwtDecode(token); // Decode token only if it's valid
@@ -59,7 +55,7 @@ export const FAVS_URLS = {
 //   };
 
 //   useEffect(() => {
-//     const token = localStorage.getItem("token");
+//     const token = localStorage.getItem("userToken");
 //     if (token) {
 //       try {
 //         const decodedToken = jwtDecode(token);

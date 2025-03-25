@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
  function Header({strong,title,description,imgSrc,width}) {
   return (
     <>
-      <div className="row header py-4 rounded-4 mx-1">
+      <div className="row header py-4 rounded-4 m-auto">
         <div className="col-md-8 d-flex justify-content-center align-items-center text-white">
           <div className="caption pl-3 px-5">
             <h3 className="fw-bold fw-bold fs-2 d-inline mx-1">{strong}</h3>
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
             <p>{description}</p>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 text-md-end text-center ">
           <img src={imgSrc} alt="img" width={width} />
         </div>
       </div>

@@ -1,35 +1,34 @@
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AuthLayout from "./Modules/Shared/AuthLayout/AuthLayout";
+import { Suspense, useEffect, useState } from "react";
+import NotFound from "./Modules/Shared/NotFound/NotFound";
+import Login from "./Modules/Auth/Login/Login";
+import Register from "./Modules/Auth/Register/Register";
+import ChangePassword from "./Modules/Auth/ChangePassword/ChangePassword";
+import ForgetPassword from "./Modules/Auth/ForgetPassword/ForgetPassword";
+import ResetPassword from "./Modules/Auth/ResetPassword/ResetPassword";
+import VerifyAccount from "./Modules/Auth/VerifyAccount/VerifyAccount";
+import MasterLayout from "./Modules/Shared/MasterLayout/MasterLayout";
+import Dashboard from "./Modules/Dashboard/Dashboard";
+import RecipecList from "./Modules/Recipes/RecipesList/RecipecList";
+import RecipeData from "./Modules/Recipes/RecipeData/RecipeData";
+import CategoriesList from "./Modules/Categories/CategoriesList/CategoriesList";
+import CategoryData from "./Modules/Categories/CategoryData/CategoryData";
+import UsersList from "./Modules/Users/UsersList/UsersList";
+import FavouritsList from "./Modules/FavouritsList/FavouritsList";
+import { ToastContainer } from "react-toastify";
 
-import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import AuthLayout from './Modules/Shared/AuthLayout/AuthLayout';
-import { Suspense, useEffect, useState } from 'react';
-import NotFound from './Modules/Shared/NotFound/NotFound';
-import Login from './Modules/Auth/Login/Login';
-import Register from './Modules/Auth/Register/Register';
-import ChangePassword from './Modules/Auth/ChangePassword/ChangePassword';
-import ForgetPassword from './Modules/Auth/ForgetPassword/ForgetPassword';
-import ResetPassword from './Modules/Auth/ResetPassword/ResetPassword';
-import VerifyAccount from './Modules/Auth/VerifyAccount/VerifyAccount';
-import MasterLayout from './Modules/Shared/MasterLayout/MasterLayout';
-import Dashboard from './Modules/Dashboard/Dashboard';
-import RecipecList from './Modules/Recipes/RecipesList/RecipecList';
-import RecipeData from './Modules/Recipes/RecipeData/RecipeData';
-import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList';
-import CategoryData from './Modules/Categories/CategoryData/CategoryData';
-import UsersList from './Modules/Users/UsersList/UsersList';
-import FavouritsList from './Modules/FavouritsList/FavouritsList';
-import { ToastContainer } from 'react-toastify';
-
-import ProtectedRoute from './Modules/Shared/ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from "./Modules/Shared/ProtectedRoute/ProtectedRoute";
 
 function App() {
   // let [loginData, setLoginData] = useState(() => {
-  //   let token = localStorage.getItem("token");
+  //   let token = localStorage.getItem("userToken");
   //   return token ? jwtDecode(token) : null;
   // });
 
   // let savedLoginData = () => {
-  //   let encodedToken = localStorage.getItem("token");
+  //   let encodedToken = localStorage.getItem("userToken");
   //   //  console.log("Encoded Token:", encodedToken); // Check if the token is correctly retrieved
   //   if (encodedToken) {
   //     let decodedToken = jwtDecode(encodedToken);
@@ -46,20 +45,19 @@ function App() {
   // };
 
   // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+  //   const token = localStorage.getItem("userToken");
   //   if (token) {
   //     try {
   //       savedLoginData();
   //     } catch (error) {
   //       console.error("Invalid token:", error);
   //       localStorage.removeItem("token");
-  //       setLoginData(null); 
+  //       setLoginData(null);
   //     }
   //   } else {
-  //     setLoginData(null); 
+  //     setLoginData(null);
   //   }
-  // }, []); 
-
+  // }, []);
 
   const router = createBrowserRouter([
     {
@@ -75,7 +73,7 @@ function App() {
           index: true,
           element: (
             <Suspense fallback="Loading Please Wait ...">
-              <Login/>
+              <Login />
             </Suspense>
           ),
         },
@@ -146,7 +144,7 @@ function App() {
           index: true,
           element: (
             <Suspense fallback="Loading Please Wait ...">
-              <Dashboard  />
+              <Dashboard />
             </Suspense>
           ),
         },
@@ -218,4 +216,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

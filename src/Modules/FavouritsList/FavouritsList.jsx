@@ -70,31 +70,6 @@ export default function FavouritsList() {
       }
     };
 
-
-  
-    // const deleteFavRecipe = async () => {
-    //   try {
-    //     const response = await privateAxiosInstance.delete(
-    //       `${RECIPES_URLS.DELETE_FAV_RECIPE(favRecipeId)}`,
-    //       {
-    //         headers: { Authorization: localStorage.getItem("token") },
-    //       }
-    //     );
-  
-    //     if (response.status === 200) {
-    //       toast.success("Recipe deleted successfully", {
-    //         theme: "colored",
-    //       });
-  
-    //       handleCloseDelete();
-    //       getAllFavRecipes(6, 1);
-    //     } else {
-    //       console.error("Expected an array but got:", response.data.data);
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
     const getAllFavRecipes = async (pageSize, pageNumber, name ,tagId, categoryId) => {
       try {
         setLoading(true);
@@ -163,15 +138,13 @@ export default function FavouritsList() {
 
         
   const authContext = useContext(AuthContext);
-  // Check if authContext is null
-  if (!authContext) {
-    return (
-      <div>
-        <BeatLoader color={"#009247"} loading={true} size={15} />
-      </div>
-    ); //  handle the null case
-  }
-  const { userData } = authContext;
+  const { userData, getUserToken } = authContext || {};
+
+  useEffect(() => {
+    if (authContext) {
+      getUserToken(); // Call only if authContext exists
+    }
+  }, [authContext, getUserToken]); 
 
     return (
       <div>
@@ -255,7 +228,7 @@ export default function FavouritsList() {
                   <div className="col-md-4 my-3" key={recipe?.id}>
                     <div className="card text-center py-2">
                       <i
-                        className="fa fa-2x fa-heart text-end me-3"
+                        className="fa fa-2x fa-heart text-end me-3 my-4"
                         onClick={() => {
                           handleShowDelete(recipe?.id);
                         }}
@@ -268,9 +241,10 @@ export default function FavouritsList() {
                         }
                         className="card-img-top"
                         alt={recipe?.recipe?.name}
+             
                       />
                       <div className="card-body">
-                        <h5 className="card-title">{recipe?.recipe?.name}</h5>
+                        <h5 className="card-title my-3">{recipe?.recipe?.name}</h5>
                         <p className="card-text">
                           {recipe?.recipe?.description}
                         </p>

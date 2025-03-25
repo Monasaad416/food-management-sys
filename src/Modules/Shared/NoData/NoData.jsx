@@ -1,4 +1,4 @@
-import noData from '../../../assets/imgs//no-data.png'
+import noData from '../../../assets/imgs/modalImg.png'
 
 export default function NoData() {
   return (

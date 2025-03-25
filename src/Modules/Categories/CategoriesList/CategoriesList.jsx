@@ -10,6 +10,7 @@ import CategoryData from "../CategoryData/CategoryData";
 import { BeatLoader } from "react-spinners";
 import Pagination from "../../Shared/Pagination/Pagination";
 import getCategories from '../../../Utilities/GetCategories.js'
+import formatDate from "../../../Utilities/FormatDate.js";
 
 
 export default function CategoriesList() {
@@ -189,7 +190,9 @@ export default function CategoriesList() {
                 <tr key={category.id}>
                   <td scope="row">{category.id}</td>
                   <td>{category.name}</td>
-                  <td>{category.creationDate}</td>
+                  <td>
+                    {formatDate(category.creationDate)}
+                  </td>
                   <td>
                     <div className="dropdown">
                       <i
@@ -251,7 +254,6 @@ export default function CategoriesList() {
       {/* start add modal */}
       <CategoryData
         showCatForm={showCatForm}
-
         getAllCategories={(pageSize, pageNumber) =>
           getCategories({
             setLoading,

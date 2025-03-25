@@ -4,7 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import NoData from "../../Shared/NoData/NoData";
 import { toast } from "react-toastify";
 import noImage from "../../../assets/imgs/modalImg.png";
-import { IMAGE_URL, privateAxiosInstance } from "../../../services/api/apiInstance";
+import {
+  IMAGE_URL,
+  privateAxiosInstance,
+} from "../../../services/api/apiInstance";
 import { FAVS_URLS, RECIPES_URLS } from "../../../services/api/apiConfig";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { BeatLoader } from "react-spinners";
@@ -14,8 +17,6 @@ import getAllTags from "../../../Utilities/GetTags.js";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/Context.jsx";
 import { useForm } from "react-hook-form";
-
-
 
 export default function RecipesList() {
   const [recipes, setRecipes] = useState([]);
@@ -29,25 +30,15 @@ export default function RecipesList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [tagId, setTagId] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
-  const pageSize= 10000000000; // high page size to get all categories in one select 
-  const pageNumber = 1;  
+  const pageSize = 10000000000; // high page size to get all categories in one select
+  const pageNumber = 1;
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-    const {
-      register,
-      formState: {isSubmitting },
-
-      handleSubmit,setValue
-
-    } = useForm();
-
-  
-  
-
+  const { register, handleSubmit, setValue } = useForm();
 
   const handleShowDelete = (id) => {
     setShowDelete(true); // Open modal
@@ -61,7 +52,6 @@ export default function RecipesList() {
       backdrop.remove();
     });
   };
-
 
   const handleShowDetails = (id) => {
     setShowDetails(true); // Open modal
@@ -99,35 +89,41 @@ export default function RecipesList() {
     }
   };
 
-const addToFavs = async (data) => {
-  try {
-    const response = await privateAxiosInstance.post(
-      `${FAVS_URLS.CREATE_FAV_RECIPE}`,
-      {
-        recipeId: data?.recipeId, // Send recipeId from form data
-      },
-      {
-        headers: { Authorization: localStorage.getItem("token") },
-      }
-    );
+  const addToFavs = async (data) => {
+    try {
+      const response = await privateAxiosInstance.post(
+        `${FAVS_URLS.CREATE_FAV_RECIPE}`,
+        {
+          recipeId: data?.recipeId, // Send recipeId from form data
+        },
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
 
-   console.log(response)
-    handleCloseDetails();
-    navigate("/dashboard/favourits");
-     toast.success('Recipe added to favourite successfully');
-  } catch (error) {
-    console.error("Failed to add to favorites:", error);
-  }
-};
+      console.log(response);
+      handleCloseDetails();
+      navigate("/dashboard/favourits");
+      toast.success("Recipe added to favourite successfully");
+    } catch (error) {
+      console.error("Failed to add to favorites:", error);
+    }
+  };
 
-  const getAllRecipes = async (pageSize, pageNumber, name ,tagId, categoryId) => {
+  const getAllRecipes = async (
+    pageSize,
+    pageNumber,
+    name,
+    tagId,
+    categoryId
+  ) => {
     try {
       setLoading(true);
       const response = await privateAxiosInstance.get(RECIPES_URLS.RECIPES, {
         params: {
           pageSize: pageSize,
           pageNumber: pageNumber,
-          name:name,
+          name: name,
           tagId: tagId,
           categoryId: categoryId,
         },
@@ -147,52 +143,48 @@ const addToFavs = async (data) => {
   };
 
   const getRecipeById = async (id) => {
-    console.log(id)
+    console.log(id);
     const response = await privateAxiosInstance.get(
       RECIPES_URLS.GET_RECIPE(id)
     );
 
+    console.log(response);
 
     setRecipe(response?.data);
     setValue("recipeId", response?.data?.id);
   };
-    useEffect(() => {
-      getAllRecipes(5, 1);
-      setCurrentPage(1);
-      getAllTags(setTags);
-      const fetchAll = async () => {
-        try {
-          await getCategories({
-            setLoading,
-            setCategories,
-            setNumOfPagesArray,
-            pageSize: 10000000,
-            pageNumber: 1,
-          });
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-      };
-
-      fetchAll();
-    }, [pageSize, pageNumber]);
-
-
-
-      const authContext = useContext(AuthContext);
-      // Check if authContext is null
-      if (!authContext) {
-        return (
-          <div>
-            <BeatLoader color={"#009247"} loading={true} size={15} />
-          </div>
-        ); //  handle the null case
+  useEffect(() => {
+    getAllRecipes(5, 1);
+    setCurrentPage(1);
+    getAllTags(setTags);
+    const fetchAll = async () => {
+      try {
+        await getCategories({
+          setLoading,
+          setCategories,
+          setNumOfPagesArray,
+          pageSize: 10000000,
+          pageNumber: 1,
+        });
+      } catch (error) {
+        console.error("Error fetching categories:", error);
       }
-      const { userData } = authContext;
+    };
 
+    fetchAll();
+  }, [pageSize, pageNumber]);
+
+  const authContext = useContext(AuthContext);
+  const { userData, getUserToken } = authContext || {};
+
+  useEffect(() => {
+    if (authContext) {
+      getUserToken(); // Call only if authContext exists
+    }
+  }, [authContext, getUserToken]); 
 
   const getNameValue = (e) => {
-    const nameValue = e.target.value.toLowerCase(); 
+    const nameValue = e.target.value.toLowerCase();
     console.log(nameValue);
     setName(nameValue);
     getAllRecipes(5, 1, nameValue, tagId, categoryId);
@@ -201,12 +193,12 @@ const addToFavs = async (data) => {
   const getTagIdValue = (e) => {
     setTagId(e.target.value);
     getAllRecipes(5, 1, name, e.target.value, categoryId);
-  }
+  };
 
   const getCategoryIdValue = (e) => {
     setCategoryId(e.target.value);
-    getAllRecipes(5, 1, name,tagId,e.target.value);
-  }; 
+    getAllRecipes(5, 1, name, tagId, e.target.value);
+  };
 
   // useEffect(() => {
   //   getAllRecipes(5, 1);
@@ -218,11 +210,8 @@ const addToFavs = async (data) => {
   //     fetchAll: true,
   //   });
 
-
   //       getAllTags();
   // }, []);
-
-
 
   return (
     <div>
@@ -302,7 +291,7 @@ const addToFavs = async (data) => {
         ) : Array.isArray(recipes) && recipes.length > 0 ? (
           <div>
             <table className="table table-striped">
-              <thead style={{ backgroundColor:'gray' }}>
+              <thead style={{ backgroundColor: "gray" }}>
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
@@ -439,18 +428,22 @@ const addToFavs = async (data) => {
                 </button>
               </div>
               <div className="modal-body text-center">
-                {/* <img
-                src={IMAGE_URL/recipe?.imagePath}
-                width={165}
-                height={200}
-                alt="recipe details"
-              /> */}
+                <img
+                  src={
+                    recipe?.imagePath
+                      ? `${IMAGE_URL}/${recipe?.imagePath}`
+                      : noImage
+                  }
+                  width={165}
+                  height={200}
+                  alt="recipe details"
+                />
 
                 <input
                   {...register("recipeId", {
                     required: "id is required",
                   })}
-                  type="text"
+                  type="hidden"
                   className="form-control"
                   defaultValue={recipe?.id} // Pre-fill the recipe ID
                   readOnly
@@ -458,6 +451,8 @@ const addToFavs = async (data) => {
 
                 <br />
                 <span className="delete-text">{recipe?.name}</span>
+                <br />
+                <span className="delete-text">{recipe?.description}</span>
               </div>
               <div className="modal-footer">
                 <button
