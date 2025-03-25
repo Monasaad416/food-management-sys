@@ -26,14 +26,14 @@ function SideMenu() {
     }
   }, [width]);
 
-  const authContext = useContext(AuthContext); 
-  const { userData, getUserToken } = authContext || {}
+  const authContext = useContext(AuthContext);
+  const { userData, getUserToken } = authContext || {};
 
   useEffect(() => {
-    if (authContext) {
-      getUserToken(); // Call only if authContext exists
+    if (getUserToken) {
+      getUserToken(); // Call only if getUserToken exists
     }
-  }, [authContext,getUserToken]); 
+  }, [getUserToken]); // Only depend on getUserToken
 
   const changePassword = () => {
     navigate("/change-password");

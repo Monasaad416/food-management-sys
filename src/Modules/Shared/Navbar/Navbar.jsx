@@ -5,16 +5,15 @@ import { AuthContext } from "../../Context/Context";
 
 
 function Navbar() {
-
-  const authContext = useContext(AuthContext); 
-  const { userData, getUserToken } = authContext || {}
+  const authContext = useContext(AuthContext);
+  const { getUserToken,userData } = authContext || {};
 
   useEffect(() => {
-    if (authContext) {
-      getUserToken(); // Call only if authContext exists
+    if (getUserToken) {
+      getUserToken(); 
     }
-  }, [authContext,getUserToken]); 
-  
+  }, [getUserToken]);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light rounded-3 m-4">

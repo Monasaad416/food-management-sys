@@ -6,14 +6,16 @@ import { AuthContext } from "../../Context/Context";
 function ProtectedRoute({ children }) {
   
 
-    const authContext = useContext(AuthContext); 
-    const { userData, getUserToken } = authContext || {}
-  
-    useEffect(() => {
-      if (authContext) {
-        getUserToken(); // Call only if authContext exists
-      }
-    }, [authContext,getUserToken]);  
+
+  const authContext = useContext(AuthContext);
+  const { getUserToken, userData } = authContext || {};
+
+  useEffect(() => {
+    if (getUserToken) {
+      getUserToken();
+    }
+  }, [getUserToken]);
+ 
   if (localStorage.getItem("token") || userData) return children;
   else return <Navigate to="/login" />;
 }

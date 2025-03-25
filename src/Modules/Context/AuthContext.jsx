@@ -15,7 +15,7 @@ function AuthContextProvider({ children }) {
     if (token) {
       try {
         const decodedUserToken = jwtDecode(token);
-        setUserData(decodedUserToken); 
+        setUserData(decodedUserToken);
       } catch (error) {
         console.error("Invalid token:", error);
         setUserData(null); // Clear user data on error
@@ -27,8 +27,9 @@ function AuthContextProvider({ children }) {
 
   useEffect(() => {
     getUserToken();
-  }, [userData,getUserToken])
+  }, [getUserToken]);
 
+  
   return (
     <AuthContext.Provider value={{ getUserToken, userData }}>
       {children}

@@ -153,7 +153,7 @@ export default function FavouritsList() {
           title="Items"
           description="You can now add your items that any user can order it from the Application and you can edit"
           imgSrc={recipiesHeader}
-          width={170}
+          width={170} 
         />
         <div className="d-flex justify-content-between mx-4 my-5">
           <div className="details">

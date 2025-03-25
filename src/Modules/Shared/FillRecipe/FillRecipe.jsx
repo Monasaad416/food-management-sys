@@ -6,14 +6,16 @@ import { AuthContext } from "../../Context/Context";
 
 
 function FillRecipe() {
-  const authContext = useContext(AuthContext); 
-  const { userData, getUserToken } = authContext || {}
+
+  const authContext = useContext(AuthContext);
+  const { getUserToken, userData } = authContext || {};
 
   useEffect(() => {
-    if (authContext) {
-      getUserToken(); // Call only if authContext exists
+    if (getUserToken) {
+      getUserToken();
     }
-  }, [authContext,getUserToken]); 
+  }, [getUserToken]);
+
 
   return (
     <div className="row fill-recipe py-3 mx-2 my-2">

@@ -175,13 +175,13 @@ export default function RecipesList() {
   }, [pageSize, pageNumber]);
 
   const authContext = useContext(AuthContext);
-  const { userData, getUserToken } = authContext || {};
+  const { getUserToken, userData } = authContext || {}; 
 
   useEffect(() => {
-    if (authContext) {
-      getUserToken(); // Call only if authContext exists
+    if (getUserToken) {
+      getUserToken(); 
     }
-  }, [authContext, getUserToken]); 
+  }, [getUserToken]);
 
   const getNameValue = (e) => {
     const nameValue = e.target.value.toLowerCase();
