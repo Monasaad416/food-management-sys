@@ -65,9 +65,7 @@ export default function CategoriesList() {
       );
 
       if (response.status === 200) {
-        toast.success(response?.data?.message || "Category deleted successfully", {
-          theme: "colored",
-        });
+        toast.success(response?.data?.message || "Category deleted successfully");
 
         handleCloseDelete();
            getCategories({

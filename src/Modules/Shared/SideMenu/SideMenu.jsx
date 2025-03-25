@@ -56,9 +56,7 @@ function SideMenu() {
       // }, 2000);
     } catch (err) {
       console.log(err);
-      toast.error("Logout Failed!", {
-        theme: "colored",
-      });
+      toast.error("Logout Failed!");
     }
   };
 

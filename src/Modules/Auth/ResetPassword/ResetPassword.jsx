@@ -40,9 +40,7 @@ export default function ResetPassword() {
       navigate("/dashboard");
       toast.success(response?.data?.message);
     } catch (error) {
-      toast.error(error.message, {
-        theme: "colored",
-      });
+      toast.error(error.message);
     }
   };
 

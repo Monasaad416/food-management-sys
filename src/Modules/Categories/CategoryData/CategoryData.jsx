@@ -48,9 +48,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
   
         } catch (error) {
           console.error("Error fetching category data:", error);
-          toast.error("Failed to fetch category data.", {
-            theme: "colored",
-          });
+          toast.error("Failed to fetch category data.");
         }
       } else {
         setValue("name"," ");

@@ -29,9 +29,7 @@ export default function VerifyAccount() {
       navigate("/dashboard");
 
     } catch (error) {
-      toast.error(error.message, {
-        theme: "colored",
-      });
+      toast.error(error.message);
     }
   };
 
