@@ -53,7 +53,6 @@ import PropTypes from "prop-types";
                   currentPage === numOfPagesArray.length ? "disabled" : ""
                 }`}
                 onClick={() => {
-                  console.log("first");
                   if (currentPage < numOfPagesArray.length) {
                     getAllItems(5, currentPage+1 ,null,null,null);
                     setCurrentPage(currentPage+1);

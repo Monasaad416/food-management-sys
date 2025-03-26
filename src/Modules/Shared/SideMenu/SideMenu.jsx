@@ -121,7 +121,6 @@ function SideMenu() {
 
               <MenuItem
                 onClick={() => {
-                  console.log("Navigating to /dashboard");
                   logout();
                   navigate("/login");
                 }}

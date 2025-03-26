@@ -42,7 +42,6 @@ export default function UsersList() {
   };
 
   const getUserById = async (id) => {
-    console.log(id);
     const response = await privateAxiosInstance.get(
       USER_URLS.GET_USER(id),
         {
@@ -50,7 +49,6 @@ export default function UsersList() {
         }
     );
 
-    console.log(response?.data);
 
     setSelectedUser(response?.data);
   };
@@ -71,7 +69,6 @@ export default function UsersList() {
   const [userId, setUserId] = useState(0);
   const deleteUser = async () => {
     try {
-      console.log(userId);
       const response = await privateAxiosInstance.delete(
         `${USER_URLS.DELETE_USER(userId)}`,
         {
@@ -112,8 +109,11 @@ export default function UsersList() {
           country: country,
           groups: group,
         },
+     
+        headers: { Authorization: localStorage.getItem("token") }
+      
       });
-      console.log(response?.data?.data?.length);
+
       setUsers(response?.data?.data);
       setNumOfPagesArray(
         Array(response?.data?.data?.length)
@@ -129,12 +129,12 @@ export default function UsersList() {
 
   useEffect(() => {
     getAllUsers();
+    setCurrentPage(1);
   }, []);
 
   const getNameValue = (e) => {
-    const nameValue = e.target.value.toLowerCase();
-    console.log(nameValue);
-    setName(nameValue);
+
+    setName(e.target.value);
     getAllUsers(5, 1, e.target.value, email, country, group);
   };
 
@@ -159,9 +159,9 @@ export default function UsersList() {
         title="Items"
         description="You can now add your items that any user can order it from the Application and you can edit"
         imgSrc={recipiesHeader}
-        width={170}
+        width={100}
       />
-      <div className="d-flex justify-content-between mx-4 my-5">
+      <div className="d-flex justify-content-between mx-4 my-3">
         <div className="details">
           <h3>users Table Details</h3>
           <span className="text-muted">You can check all details</span>
@@ -309,7 +309,7 @@ export default function UsersList() {
         id="showModal"
         tabIndex={-1}
         style={{ display: showDetails == true ? "block" : "none" }}
-        aria-hidden={!showDetails}
+        aria-hidden={showDetails}
       >
         <div className="modal-dialog">
           <div className="modal-content">

@@ -19,7 +19,7 @@ function Dashboard() {
   return (
     <>
       <Header
-        strong="Welcome"
+        strong="Welcome " 
         title={userData?.userName}
         description="This is a welcoming screen for the entry of the application , you can now see the option"
         imgSrc={dashboardHeader}

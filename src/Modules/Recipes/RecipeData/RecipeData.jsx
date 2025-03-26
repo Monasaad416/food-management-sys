@@ -22,30 +22,30 @@ export default function RecipeData() {
   const params = useParams();
   const recipeId = params.recipeId;
 
-  const [selectedFile, setSelectedFile] = useState(null); // Initialize state to null
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleDrop = (e) => {
-    e.preventDefault(); // Prevent default browser behavior
-    const file = e.dataTransfer.files[0]; // Get the first dropped file
+    e.preventDefault();
+    const file = e.dataTransfer.files[0]; 
     if (file) {
-      setSelectedFile(file); // Store the entire file object
+      setSelectedFile(file);
     }
   };
 
   const handleDragOver = (e) => {
-    e.preventDefault(); // Allow the drop action
+    e.preventDefault(); 
   };
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file); // Logs the file object
+
     if (file) {
-      setSelectedFile(file); // Update state
+      setSelectedFile(file); 
     }
   };
 
   useEffect(() => {
   
-  }, [selectedFile]); // Runs whenever selectedFile changes
+  }, [selectedFile]);
 
   const {
     register,
@@ -98,35 +98,45 @@ export default function RecipeData() {
   }, [recipeId, setValue]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+
 
     const formData = new FormData();
 
     // Append fields to FormData
     for (let key in data) {
       if (key === "recipeImage") {
-        formData.append(key,selectedFile); // Correctly add the file
+        formData.append(key,selectedFile); 
       } else {
         formData.append(key, data[key]);
       }
     }
 
-    console.log(Object.fromEntries(formData.entries())); // Debug FormData
+    // console.log(Object.fromEntries(formData.entries()));
 
     try {
       if (recipeId != null) {
         await privateAxiosInstance.put(
           RECIPES_URLS.UPDATE_RECIPE(recipeId),
-          formData, // Send FormData (not the plain data object)
-          { headers: { "Content-Type": "multipart/form-data" } }
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: localStorage.getItem("token"),
+            },
+          }
         );
         navigate("/dashboard/recipes");
-        toast.success("Category Updated Successfully");
+        toast.success("Recipe Updated Successfully");
       } else {
         const response = await privateAxiosInstance.post(
           RECIPES_URLS.CREATE_RECIPE,
-          formData, // Send FormData (not the plain data object)
-          { headers: { "Content-Type": "multipart/form-data" } }
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: localStorage.getItem("token"),
+            },
+          }
         );
         navigate("/dashboard/recipes");
         toast.success(response?.data?.message);
@@ -237,10 +247,10 @@ export default function RecipeData() {
             )}
 
             {/* image */}
-            <div className="row">
+            <div className="row input-group">
               {/* profileImage */}
               <div className="col">
-                <div className="input-group my-1">
+                <div className="my-1">
                   <div>
                     {/* Drag and Drop Area */}
                     <div
@@ -253,6 +263,7 @@ export default function RecipeData() {
                         padding: "20px",
                         textAlign: "center",
                         margin: "20px",
+                        width: "100%",
                       }}
                       className=""
                     >
@@ -265,7 +276,7 @@ export default function RecipeData() {
                         accept="image/*"
                         {...register("recipeImage")}
                         onChange={(event) => {
-                          console.log(event.target.files);
+                          // console.log(event.target.files);
                           handleFileChange(event); // Track files manually
                         }}
                       />
@@ -284,7 +295,6 @@ export default function RecipeData() {
 
                     {/* Display Uploaded Files */}
                     <div>
-                      
                       <h4>Uploaded Files:</h4>
                       {selectedFile && (
                         <img

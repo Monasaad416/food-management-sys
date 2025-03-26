@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
         <div className="col-md-8 d-flex justify-content-center align-items-center text-white">
           <div className="caption pl-3 px-5">
             <h3 className="fw-bold fw-bold fs-2 d-inline mx-1">{strong}</h3>
-            <h6 className="d-inline fw-bold fs-4">{title}</h6>
+            <h6 className="d-inline fs-4">{title}</h6>
             <p>{description}</p>
           </div>
         </div>

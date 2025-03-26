@@ -42,8 +42,6 @@ export default function Register() {
             } else {
               formData.append(key, data[key]);
             }
-
-            console.log(formData);
           }
       const response = await publicAxiosInstance.post(USER_URLS.REGISTER, data);
 
@@ -266,10 +264,10 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row input-group">
           {/* profileImage */}
           <div className="col">
-            <div className="input-group my-1">
+            <div className=" my-1">
               <div>
                 {/* Drag and Drop Area */}
                 <div
@@ -281,7 +279,7 @@ export default function Register() {
                     borderRadius: "8px",
                     padding: "20px",
                     textAlign: "center",
-                    margin: "20px",
+                    margin: "20px 0 ",
                   }}
                   className=""
                 >

@@ -30,13 +30,11 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       const response = await publicAxiosInstance.post(
         USER_URLS.RESET_PASSWORD,
         data
       );
 
-      console.log(response);
       navigate("/dashboard");
       toast.success(response?.data?.message);
     } catch (error) {

@@ -18,7 +18,9 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
 
   const addCategory = async (data) => {
     try {
-      await privateAxiosInstance.post(CATEGORIES_URLS.CREATE_CATEGORY, data);
+      await privateAxiosInstance.post(CATEGORIES_URLS.CREATE_CATEGORY, data, {
+        headers: {Authorization: localStorage.getItem("token")},
+      });
 
       toast.success("New category created successfully");
 
@@ -61,7 +63,10 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
 
   const updateCategory = async (data) => {
     try {
-      await privateAxiosInstance.put(CATEGORIES_URLS.UPDATE_CATEGORY(categoryId), data);
+      await privateAxiosInstance.put(CATEGORIES_URLS.UPDATE_CATEGORY(categoryId), data,{
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        }});
 
       toast.success("Category updated successfully");
 
@@ -81,7 +86,7 @@ function CategoryData({showCatForm,getAllCategories,handleCloseCatForm,categoryI
         id="catFormModal"
         tabIndex={-1}
         style={{ display: showCatForm == true ? "block" : "none" }}
-        aria-hidden={!showCatForm}
+        aria-hidden={showCatForm}
       >
         <div className="modal-dialog">
           <div className="modal-content">

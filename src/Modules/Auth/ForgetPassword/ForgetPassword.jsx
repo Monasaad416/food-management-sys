@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -18,8 +18,6 @@ export default function ForgetPassword() {
         USER_URLS.FORGET_PASSWORD,
         data
       );
-
-      console.log(response);
       navigate("/reset-password",{state:{email: data.email}});
       toast.success(response?.data?.message);
     } catch (error) {

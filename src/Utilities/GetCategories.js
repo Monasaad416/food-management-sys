@@ -19,7 +19,9 @@ export default async function getCategories({
 
     const response = await privateAxiosInstance.get(
       CATEGORIES_URLS.CATEGORIES,
-      { params }
+      { params ,
+        headers: { Authorization: localStorage.getItem("token") },
+      }
     );
 
     setCategories(response?.data?.data);

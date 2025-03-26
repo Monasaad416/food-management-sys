@@ -22,6 +22,7 @@ export default function RecipesList() {
   const [recipes, setRecipes] = useState([]);
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
+  const [recipeLoading, setRecipeLoading] = useState(true);
   //delete modal
   const [showDelete, setShowDelete] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -61,6 +62,8 @@ export default function RecipesList() {
 
   const handleCloseDetails = () => {
     setShowDetails(false); // Close modal
+    setRecipeId(0);
+    setRecipeLoading(false);
     document.body.classList.remove("modal-open");
     document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
       backdrop.remove();
@@ -93,16 +96,16 @@ export default function RecipesList() {
     try {
 
       if(data?.recipeId) {
-              const response = await privateAxiosInstance.post(
+              await privateAxiosInstance.post(
                 `${FAVS_URLS.CREATE_FAV_RECIPE}`,
                 {
-                  recipeId: data?.recipeId, // Send recipeId from form data
+                  recipeId: data?.recipeId, 
                 },
                 {
                   headers: { Authorization: localStorage.getItem("token") },
                 }
               );
-                    console.log(response);
+ 
       handleCloseDetails();
       navigate("/dashboard/favourits");
       toast.success("Recipe added to favourite successfully");
@@ -132,6 +135,7 @@ export default function RecipesList() {
           tagId: tagId,
           categoryId: categoryId,
         },
+        headers: { Authorization: localStorage.getItem("token") },
       });
       // console.log(response.data.data);
       setRecipes(response?.data?.data);
@@ -148,14 +152,12 @@ export default function RecipesList() {
   };
 
   const getRecipeById = async (id) => {
-    console.log(id);
     const response = await privateAxiosInstance.get(
       RECIPES_URLS.GET_RECIPE(id)
     );
 
-    console.log(response);
-
     setRecipe(response?.data);
+    setRecipeLoading(true);
     setValue("recipeId", response?.data?.id);
   };
   useEffect(() => {
@@ -190,7 +192,6 @@ export default function RecipesList() {
 
   const getNameValue = (e) => {
     const nameValue = e.target.value.toLowerCase();
-    console.log(nameValue);
     setName(nameValue);
     getAllRecipes(5, 1, nameValue, tagId, categoryId);
   };
@@ -416,7 +417,7 @@ export default function RecipesList() {
           id="showModal"
           tabIndex={-1}
           style={{ display: showDetails == true ? "block" : "none" }}
-          aria-hidden={!showDetails}
+          aria-hidden={showDetails}
         >
           <div className="modal-dialog">
             <div className="modal-content">
@@ -433,31 +434,43 @@ export default function RecipesList() {
                 </button>
               </div>
               <div className="modal-body text-center">
-                <img
-                  src={
-                    recipe?.imagePath
-                      ? `${IMAGE_URL}/${recipe?.imagePath}`
-                      : noImage
-                  }
-                  width={165}
-                  height={200}
-                  alt="recipe details"
-                />
+                {recipeLoading ? (
+                  <div>
+                    <img
+                      src={
+                        recipe?.imagePath
+                          ? `${IMAGE_URL}/${recipe?.imagePath}`
+                          : noImage
+                      }
+                      width={165}
+                      height={200}
+                      alt="recipe details"
+                    />
 
-                <input
-                  {...register("recipeId", {
-                    required: "id is required",
-                  })}
-                  type="hidden"
-                  className="form-control"
-                  defaultValue={recipe?.id} 
-                  readOnly
-                />
+                    <input
+                      {...register("recipeId", {
+                        required: "id is required",
+                      })}
+                      type="hidden"
+                      className="form-control"
+                      defaultValue={recipe?.id}
+                      readOnly
+                    />
 
-                <br />
-                <span className="delete-text">{recipe?.name}</span>
-                <br />
-                <span className="delete-text">{recipe?.description}</span>
+                    <br />
+                    <div className="my-4">
+                      <span className="delete-text">{recipe?.name}</span>
+                      <br />
+                      <span className="delete-text">{recipe?.description}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <BeatLoader
+                    color={"#009247"}
+                    loading={recipeLoading}
+                    size={15}
+                  />
+                )}
               </div>
               <div className="modal-footer">
                 <button

@@ -10,7 +10,7 @@ import { BeatLoader } from "react-spinners";
 import NoData from "../Shared/NoData/NoData";
 import DeleteConfirmation from "../Shared/DeleteConfirmation/DeleteConfirmation";
 import Pagination from "../Shared/Pagination/Pagination";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import noImage from "../../assets/imgs/modalImg.png";
 import { toast } from "react-toastify";
 
@@ -50,7 +50,7 @@ export default function FavouritsList() {
 
     const removeFavRecipe = async (data) => {
       try {
-        const response = await privateAxiosInstance.delete(
+         await privateAxiosInstance.delete(
           `${FAVS_URLS.DELETE_FAV_RECIPE(favRecipeId)}`,
           {
             favRecipeId: data?.id, 
@@ -60,11 +60,11 @@ export default function FavouritsList() {
           }
         );
 
-        console.log(response);
+
         handleCloseDelete();
         navigate("/dashboard/favourits");
         toast.success("Recipe removed from favourite successfully");
-        getAllFavRecipes();
+        getAllFavRecipes(6,1);
       } catch (error) {
         console.error("Failed to add to favorites:", error);
       }
@@ -73,21 +73,27 @@ export default function FavouritsList() {
     const getAllFavRecipes = async (pageSize, pageNumber, name ,tagId, categoryId) => {
       try {
         setLoading(true);
-        const response = await privateAxiosInstance.get(FAVS_URLS.FAV_RECIPES , {
-          headers: { Authorization: localStorage.getItem("token") },
-        } ,{
-          params: {
-            pageSize: pageSize,
-            pageNumber: pageNumber,
-            name:name,
-            tagId: tagId,
-            categoryId: categoryId,
-          },
-        });
+          const response = await privateAxiosInstance.get(
+            FAVS_URLS.FAV_RECIPES,
+            {
+              params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                name: name,
+                tagId: tagId,
+                categoryId: categoryId,
+              },
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+
+          console.log(response)
       
         setFavRecipes(response?.data?.data);
         setNumOfPagesArray(
-          Array(response?.data?.totalNumberOfPages)
+          Array(response?.data?.data?.totalNumberOfPages)
             .fill()
             .map((_, index) => index + 1)
         );
@@ -99,7 +105,7 @@ export default function FavouritsList() {
     };
 
     useEffect(() => {
-      getAllFavRecipes(3, 1);
+      getAllFavRecipes(6, 1);
       setCurrentPage(1);
       getAllTags(setTags);
       const fetchAll = async () => {
@@ -124,17 +130,17 @@ export default function FavouritsList() {
       const nameValue = e.target.value.toLowerCase();
       console.log(nameValue);
       setName(nameValue);
-      getAllFavRecipes(3, 1, nameValue, tagId, categoryId);
+      getAllFavRecipes(6, 1, nameValue, tagId, categoryId);
     };
 
     const getTagIdValue = (e) => {
       setTagId(e.target.value);
-      getAllFavRecipes(3, 1, name, e.target.value, categoryId);
+      getAllFavRecipes(6, 1, name, e.target.value, categoryId);
     };
 
     const getCategoryIdValue = (e) => {
       setCategoryId(e.target.value);
-      getAllFavRecipes(3, 1, name, tagId, e.target.value);
+      getAllFavRecipes(6, 1, name, tagId, e.target.value);
     }; 
 
 
@@ -158,24 +164,7 @@ export default function FavouritsList() {
           imgSrc={recipiesHeader}
           width={100} 
         />
-        <div className="d-flex justify-content-between mx-4 my-5">
-          <div className="details">
-            <h3>Recipes Table Details</h3>
-            <span className="text-muted">You can check all details</span>
-          </div>
-          {userData?.userGroup != "SystemUser" ? (
-            <div>
-              <Link
-                to="/dashboard/recipes/create-recipe"
-                className="btn btn-custom fw-bold"
-              >
-                Add New Recipe
-              </Link>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
+
         <div className="row my-5 mx-4">
           <div className="col-md-8 my-2">
             {/* <i className="fa-solid fa-magnifying-glass"></i> */}
